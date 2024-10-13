@@ -13,4 +13,4 @@ This [MelonLoader](https://melonwiki.xyz) mod opens a serial interface for [*Sta
 
 - A special thanks goes to [*jariz*](https://github.com/jariz) for developing the [*StarTruckerCustomRadio*](https://github.com/jariz/StarTruckerCustomRadio) mod and making it available on GitHub, which provided a solid foundation for this project.
 
-- This mod utilized the [System.IO.Ports](https://www.nuget.org/packages/system.io.ports/) NuGet package by Microsoft.
+- This mod utilizes the [System.IO.Ports](https://www.nuget.org/packages/system.io.ports/) NuGet package by Microsoft.
