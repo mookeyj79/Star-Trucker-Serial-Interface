@@ -2,7 +2,7 @@
 This [MelonLoader](https://melonwiki.xyz) mod opens a serial interface for [*Star Trucker*](https://star-trucker.com), enabling devices such as [Arduino's](https://www.arduino.cc/), [ESP32's](https://www.espressif.com/en/products/socs/esp32), and [Raspberry Pi's](https://www.raspberrypi.com/) to seamlessly interact with the game.
 
 ## How To
-- Please visit the [wiki](https://github.com/mookeyj79/Star-Trucker-Serial-Interface/wiki) to see detailed information on using this mod.
+- For comprehensive information on using this mod, please visit the [wiki](https://github.com/mookeyj79/Star-Trucker-Serial-Interface/wiki).
 
 ## Thank You's
 - This mod draws significant inspiration from the *Objects in Space* serial protocol.
