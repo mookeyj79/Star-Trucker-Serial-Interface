@@ -32,9 +32,26 @@ namespace ST_Serial_Interface
             CMD_Rolodex["TOGGLE_LOWERLIGHTS_OFF"] = new Func<string>(interactor.ToggleLowerLightsOff);
             CMD_Rolodex["TOGGLE_UPPERLIGHTS_ON"] = new Func<string>(interactor.ToggleUpperLightsOn);
             CMD_Rolodex["TOGGLE_UPPERLIGHTS_OFF"] = new Func<string>(interactor.ToggleUpperLightsOff);
+            CMD_Rolodex["TOGGLE_CIRCUIT_GRAVITY_ON"] = new Func<string>(interactor.ToggleCircuitPanelGravityOn);
+            CMD_Rolodex["TOGGLE_CIRCUIT_GRAVITY_OFF"] = new Func<string>(interactor.ToggleCircuitPanelGravityOff);
+            CMD_Rolodex["TOGGLE_CIRCUIT_SHIELD_ON"] = new Func<string>(interactor.ToggleCircuitPanelShieldOn);
+            CMD_Rolodex["TOGGLE_CIRCUIT_SHIELD_OFF"] = new Func<string>(interactor.ToggleCircuitPanelShieldOff);
+            CMD_Rolodex["TOGGLE_CIRCUIT_TEMP_ON"] = new Func<string>(interactor.ToggleCircuitPanelTempOn);
+            CMD_Rolodex["TOGGLE_CIRCUIT_TEMP_OFF"] = new Func<string>(interactor.ToggleCircuitPanelTempOff);
+            CMD_Rolodex["TOGGLE_CIRCUIT_OXYGEN_ON"] = new Func<string>(interactor.ToggleCircuitPanelOxygenOn);
+            CMD_Rolodex["TOGGLE_CIRCUIT_OXYGEN_OFF"] = new Func<string>(interactor.ToggleCircuitPanelOxygenOff);
+            CMD_Rolodex["TOGGLE_CIRCUIT_MAGLOCK_ON"] = new Func<string>(interactor.ToggleCircuitPanelMaglockOn);
+            CMD_Rolodex["TOGGLE_CIRCUIT_MAGLOCK_OFF"] = new Func<string>(interactor.ToggleCircuitPanelMaglockOff);
+            CMD_Rolodex["TOGGLE_CIRCUIT_CORE_ON"] = new Func<string>(interactor.ToggleCircuitPanelCoreOn);
+            CMD_Rolodex["TOGGLE_CIRCUIT_CORE_OFF"] = new Func<string>(interactor.ToggleCircuitPanelCoreOff);
+            CMD_Rolodex["TOGGLE_CIRCUIT_SUIT_ON"] = new Func<string>(interactor.ToggleCircuitPanelSuitOn);
+            CMD_Rolodex["TOGGLE_CIRCUIT_SUIT_OFF"] = new Func<string>(interactor.ToggleCircuitPanelSuitOff);
             CMD_Rolodex["TOGGLE_HORN_ON"] = new Func<string>(interactor.ToggleHornOn);
             CMD_Rolodex["TOGGLE_HORN_OFF"] = new Func<string>(interactor.ToggleHornOff);
             CMD_Rolodex["TOGGLE_SHUTTERS"] = new Func<string>(interactor.ToggleShutters);
+            CMD_Rolodex["TOGGLE_CRUISE_CONTROL"] = new Func<string>(interactor.ToggleCruiseControl);
+            CMD_Rolodex["INCREASE_CRUISE_CONTROL"] = new Func<string>(interactor.IncreaseCruiseControl);
+            CMD_Rolodex["DECREASE_CRUISE_CONTROL"] = new Func<string>(interactor.DecreaseCruiseControl);
 
             RINT_Rolodex["GET_SPEEDOMETER"] = new Func<int>(data_collector.GetSpeedometer_INT);
             RINT_Rolodex["GET_FUEL_LEVEL"] = new Func<int>(data_collector.GetFuelLevel_INT);

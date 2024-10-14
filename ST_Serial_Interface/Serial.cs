@@ -7,9 +7,9 @@ namespace ST_Serial_Interface
         // Determines if the serial loop should keep running
         private static bool mod_active = false;
 
-        // Current app state
+        // Current app phase
         // 0 - Initialize; 1 -Synchronization; 2 - Activate
-        public static int state = 0;
+        public static int phase = 0;
 
         // Message received via serial
         public static string message = "";
@@ -98,22 +98,28 @@ namespace ST_Serial_Interface
                 try
                 {
                     message = serial_port.ReadLine().Trim().ToUpper();
-                    if (string_comparer.Equals(message, "SYN") && state == 0)
+                    if (string_comparer.Equals(message, "SYN") && phase == 0)
                     {
-                        state = 1;
+                        phase = 1;
                         resp = "ACK";
                     }
-                    else if (string_comparer.Equals(message, "ACT") && state == 1)
+                    else if (string_comparer.Equals(message, "ACT") && phase == 1)
                     {
-                        state = 2;
+                        phase = 2;
                         resp = "ACK";
                     }
-                    else if (state == 1 && (message.StartsWith("CMD") || message.StartsWith("RBOOL") || message.StartsWith("RINT") || message.StartsWith("RFLT")))
+                    else if (phase == 1 && (message.StartsWith("CMD") || message.StartsWith("RBOOL") || message.StartsWith("RINT") || message.StartsWith("RFLT")))
                     {
                         resp = CommandBuilder(message);
                     }
-                    else if (state == 2 && message.StartsWith("EXC")){
+                    else if (phase == 2 && message.StartsWith("EXC")){
                         resp = CommandExecuter(message);
+                    }
+                    else if (message.StartsWith("RST"))
+                    {
+                        phase = 0;
+                        rolodex.Channels.Clear();
+                        resp = "ACK";
                     }
                     else
                     {

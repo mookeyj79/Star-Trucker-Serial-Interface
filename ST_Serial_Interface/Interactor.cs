@@ -11,8 +11,16 @@ namespace ST_Serial_Interface
         private ToggleSwitch? frontlights_obj;
         private ToggleSwitch? lowerlights_obj;
         private ToggleSwitch? upperlights_obj;
+        private ToggleSwitch? circuit_gravity_obj;
+        private ToggleSwitch? circuit_shield_obj;
+        private ToggleSwitch? circuit_temp_obj;
+        private ToggleSwitch? circuit_oxygen_obj;
+        private ToggleSwitch? circuit_maglock_obj;
+        private ToggleSwitch? circuit_core_obj;
+        private ToggleSwitch? circuit_suit_obj;
         private InteractTarget? horn_obj;
         private InteractTarget? shutters_obj;
+        private CruiseControlSwitch? cruise_control_obj;
 
         public string ToggleHeadLightsOn()
         {
@@ -206,6 +214,230 @@ namespace ST_Serial_Interface
             return "ACK";
         }
 
+        public string ToggleCircuitPanelGravityOn()
+        {
+            // Verify that 'circuit_gravity_obj' exists, create if not
+            if (circuit_gravity_obj == null)
+            {
+                try { circuit_gravity_obj = GameObject.Find("StarTruck_Circuit_Panel [Gravity]").GetComponent<ToggleSwitch>(); }
+                catch { return "DEN"; }
+            }
+
+            // Toggle gravity cicuit breaker on
+            circuit_gravity_obj.ToggleOn();
+
+            // Return acknowledgement
+            return "ACK";
+        }
+
+        public string ToggleCircuitPanelGravityOff()
+        {
+            // Verify that 'circuit_gravity_obj' exists, create if not
+            if (circuit_gravity_obj == null)
+            {
+                try { circuit_gravity_obj = GameObject.Find("StarTruck_Circuit_Panel [Gravity]").GetComponent<ToggleSwitch>(); }
+                catch { return "DEN"; }
+            }
+
+            // Toggle gravity circuit breaker off
+            circuit_gravity_obj.ToggleOff();
+
+            // Return acknowledgement
+            return "ACK";
+        }
+
+        public string ToggleCircuitPanelShieldOn()
+        {
+            // Verify that 'circuit_shield_obj' exists, create if not
+            if (circuit_shield_obj == null)
+            {
+                try { circuit_shield_obj = GameObject.Find("StarTruck_Circuit_Panel [Shield]").GetComponent<ToggleSwitch>(); }
+                catch { return "DEN"; }
+            }
+
+            // Toggle shield circuit breaker on
+            circuit_shield_obj.ToggleOn();
+
+            // Return acknowledgement
+            return "ACK";
+        }
+
+        public string ToggleCircuitPanelShieldOff()
+        {
+            // Verify that 'circuit_shield_obj' exists, create if not
+            if (circuit_shield_obj == null)
+            {
+                try { circuit_shield_obj = GameObject.Find("StarTruck_Circuit_Panel [Shield]").GetComponent<ToggleSwitch>(); }
+                catch { return "DEN"; }
+            }
+
+            // Toggle shield circuit breaker off
+            circuit_shield_obj.ToggleOff();
+
+            // Return acknowledgement
+            return "ACK";
+        }
+
+        public string ToggleCircuitPanelTempOn()
+        {
+            // Verify that 'circuit_temp_obj' exists, create if not
+            if (circuit_temp_obj == null)
+            {
+                try { circuit_temp_obj = GameObject.Find("StarTruck_Circuit_Panel [Temp]").GetComponent<ToggleSwitch>(); }
+                catch { return "DEN"; }
+            }
+
+            // Toggle temp circuit breaker on
+            circuit_temp_obj.ToggleOn();
+
+            // Return acknowledgement
+            return "ACK";
+        }
+
+        public string ToggleCircuitPanelTempOff()
+        {
+            // Verify that 'circuit_temp_obj' exists, create if not
+            if (circuit_temp_obj == null)
+            {
+                try { circuit_temp_obj = GameObject.Find("StarTruck_Circuit_Panel [Temp]").GetComponent<ToggleSwitch>(); }
+                catch { return "DEN"; }
+            }
+
+            // Toggle temp circuit breaker off
+            circuit_temp_obj.ToggleOff();
+
+            // Return acknowledgement
+            return "ACK";
+        }
+
+        public string ToggleCircuitPanelOxygenOn()
+        {
+            // Verify that 'circuit_temp_obj' exists, create if not
+            if (circuit_oxygen_obj == null)
+            {
+                try { circuit_oxygen_obj = GameObject.Find("StarTruck_Circuit_Panel [Oxygen]").GetComponent<ToggleSwitch>(); }
+                catch { return "DEN"; }
+            }
+
+            // Toggle oxygen circuit breaker on
+            circuit_oxygen_obj.ToggleOn();
+
+            // Return acknowledgement
+            return "ACK";
+        }
+
+        public string ToggleCircuitPanelOxygenOff()
+        {
+            // Verify that 'circuit_temp_obj' exists, create if not
+            if (circuit_oxygen_obj == null)
+            {
+                try { circuit_oxygen_obj = GameObject.Find("StarTruck_Circuit_Panel [Oxygen]").GetComponent<ToggleSwitch>(); }
+                catch { return "DEN"; }
+            }
+
+            // Toggle oxygen circuit breaker off
+            circuit_oxygen_obj.ToggleOff();
+
+            // Return acknowledgement
+            return "ACK";
+        }
+
+        public string ToggleCircuitPanelMaglockOn()
+        {
+            // Verify that 'circuit_maglock_obj' exists, create if not
+            if (circuit_maglock_obj == null)
+            {
+                try { circuit_maglock_obj = GameObject.Find("StarTruck_Circuit_Panel  [Maglock]").GetComponent<ToggleSwitch>(); }
+                catch { return "DEN"; }
+            }
+
+            // Toggle maglock circuit breaker on
+            circuit_maglock_obj.ToggleOn();
+
+            // Return acknowledgement
+            return "ACK";
+        }
+
+        public string ToggleCircuitPanelMaglockOff()
+        {
+            // Verify that 'circuit_maglock_obj' exists, create if not
+            if (circuit_maglock_obj == null)
+            {
+                try { circuit_maglock_obj = GameObject.Find("StarTruck_Circuit_Panel  [Maglock]").GetComponent<ToggleSwitch>(); }
+                catch { return "DEN"; }
+            }
+
+            // Toggle maglock circuit breaker off
+            circuit_maglock_obj.ToggleOff();
+
+            // Return acknowledgement
+            return "ACK";
+        }
+
+        public string ToggleCircuitPanelCoreOn()
+        {
+            // Verify that 'circuit_core_obj' exists, create if not
+            if (circuit_core_obj == null)
+            {
+                try { circuit_core_obj = GameObject.Find("StarTruck_Circuit_Panel [Core]").GetComponent<ToggleSwitch>(); }
+                catch { return "DEN"; }
+            }
+
+            // Toggle core circuit breaker on
+            circuit_core_obj.ToggleOn();
+
+            // Return acknowledgement
+            return "ACK";
+        }
+
+        public string ToggleCircuitPanelCoreOff()
+        {
+            // Verify that 'circuit_core_obj' exists, create if not
+            if (circuit_core_obj == null)
+            {
+                try { circuit_core_obj = GameObject.Find("StarTruck_Circuit_Panel [Core]").GetComponent<ToggleSwitch>(); }
+                catch { return "DEN"; }
+            }
+
+            // Toggle core circuit breaker off
+            circuit_core_obj.ToggleOff();
+
+            // Return acknowledgement
+            return "ACK";
+        }
+
+        public string ToggleCircuitPanelSuitOn()
+        {
+            // Verify that 'circuit_suit_obj' exists, create if not
+            if (circuit_suit_obj == null)
+            {
+                try { circuit_suit_obj = GameObject.Find("StarTruck_Circuit_Panel [Suit]").GetComponent<ToggleSwitch>(); }
+                catch { return "DEN"; }
+            }
+
+            // Toggle suit circuit breaker on
+            circuit_suit_obj.ToggleOn();
+
+            // Return acknowledgement
+            return "ACK";
+        }
+
+        public string ToggleCircuitPanelSuitOff()
+        {
+            // Verify that 'circuit_suit_obj' exists, create if not
+            if (circuit_suit_obj == null)
+            {
+                try { circuit_suit_obj = GameObject.Find("StarTruck_Circuit_Panel [Suit]").GetComponent<ToggleSwitch>(); }
+                catch { return "DEN"; }
+            }
+
+            // Toggle suit circuit breaker off
+            circuit_suit_obj.ToggleOff();
+
+            // Return acknowledgement
+            return "ACK";
+        }
+
         public string ToggleHornOn()
         {
             // Verify that 'horn_obj' exists, create if not
@@ -249,6 +481,54 @@ namespace ST_Serial_Interface
 
             // Toggle shutters
             shutters_obj.OnPrimaryInteract(true);
+
+            // Return acknowledgement
+            return "ACK";
+        }
+
+        public string ToggleCruiseControl()
+        {
+            // Verify that 'cruise_control_obj' exists, create if not
+            if (cruise_control_obj == null)
+            {
+                try { cruise_control_obj = GameObject.Find("StarTruck_Switch_Pole [Cruise Control Enable]").GetComponent<CruiseControlSwitch>(); }
+                catch { return "DEN"; }
+            }
+
+            // Toggle shutters
+            cruise_control_obj.OnInteract();
+
+            // Return acknowledgement
+            return "ACK";
+        }
+
+        public string IncreaseCruiseControl()
+        {
+            // Verify that 'cruise_control_obj' exists, create if not
+            if (cruise_control_obj == null)
+            {
+                try { cruise_control_obj = GameObject.Find("StarTruck_Switch_Pole [Cruise Control Enable]").GetComponent<CruiseControlSwitch>(); }
+                catch { return "DEN"; }
+            }
+
+            // Toggle shutters
+            cruise_control_obj.OnIncreaseSpeedButtonPress();
+
+            // Return acknowledgement
+            return "ACK";
+        }
+
+        public string DecreaseCruiseControl()
+        {
+            // Verify that 'cruise_control_obj' exists, create if not
+            if (cruise_control_obj == null)
+            {
+                try { cruise_control_obj = GameObject.Find("StarTruck_Switch_Pole [Cruise Control Enable]").GetComponent<CruiseControlSwitch>(); }
+                catch { return "DEN"; }
+            }
+
+            // Toggle shutters
+            cruise_control_obj.OnDecreaseSpeedButtonPress();
 
             // Return acknowledgement
             return "ACK";

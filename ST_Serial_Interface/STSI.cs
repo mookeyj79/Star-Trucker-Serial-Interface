@@ -18,7 +18,7 @@ namespace ST_Serial_Interface
         private readonly Serial serial = new();
 
         // App state checker for the logger
-        private static int state_old = Serial.state;
+        private static int phase_old = Serial.phase;
 
         // Melon Preferences options
         private MelonPreferences_Category? serial_category;
@@ -72,22 +72,22 @@ namespace ST_Serial_Interface
         {
             base.OnFixedUpdate();
 
-            // Logging for the app state
-            if (Serial.state != state_old)
+            // Logging for the app phase
+            if (Serial.phase != phase_old)
             {
-                if (Serial.state == 0)
+                if (Serial.phase == 0)
                 {
                     LoggerInstance.Msg("App State: Initialize");
                 }
-                else if (Serial.state == 1)
+                else if (Serial.phase == 1)
                 {
                     LoggerInstance.Msg("App State: Synchronization");
                 }
-                else if (Serial.state == 2)
+                else if (Serial.phase == 2)
                 {
                     LoggerInstance.Msg("App State: Activate");
                 }
-                state_old = Serial.state;
+                phase_old = Serial.phase;
             }
         }
 
