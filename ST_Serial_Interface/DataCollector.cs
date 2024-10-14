@@ -22,6 +22,7 @@ namespace ST_Serial_Interface
         private ToggleSwitch? frontlights_obj;
         private ToggleSwitch? lowerlights_obj;
         private ToggleSwitch? upperlights_obj;
+        private CruiseControl? cruise_control_obj;
 
         private T GetAirFilter_R1_Base<T>()
         {
@@ -648,6 +649,37 @@ namespace ST_Serial_Interface
         {
             // Returns a 'float' variant of the maglock power level
             return GetMaglockPowerLevel_B_Base<float>();
+        }
+
+        private T GetCruiseControlSpeed_Base<T>()
+        {
+            // Set default output
+            float cruise_control_speed = 0;
+
+            // Verify that 'cruise_control_obj' exists, create if not
+            if (cruise_control_obj == null)
+            {
+                try { cruise_control_obj = GameObject.FindAnyObjectByType<CruiseControl>(); }
+                catch { cruise_control_obj = null; }
+            }
+
+            // Get current cruise control speed
+            if (cruise_control_obj != null) { cruise_control_speed = cruise_control_obj.cruiseControlSpeed.Get().Map(0, (float)89.408, 0, 200); }
+
+            // Return value in given type
+            return (T)Convert.ChangeType(cruise_control_speed, typeof(T));
+        }
+
+        public int GetCruiseControlSpeed_INT()
+        {
+            // Returns a 'int' variant of the cruise control speed
+            return GetCruiseControlSpeed_Base<int>();
+        }
+
+        public float GetCruiseControlSpeed_FLOAT()
+        {
+            // Returns a 'float' variant of the cruise control speed
+            return GetCruiseControlSpeed_Base<float>();
         }
     }
 }

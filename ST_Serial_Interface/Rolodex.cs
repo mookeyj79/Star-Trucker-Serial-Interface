@@ -67,6 +67,7 @@ namespace ST_Serial_Interface
             RINT_Rolodex["GET_AIR_FILTER_STATUS_R2"] = new Func<int>(data_collector.GetAirFilter_R2_INT);
             RINT_Rolodex["GET_AIR_FILTER_STATUS_L1"] = new Func<int>(data_collector.GetAirFilter_L1_INT);
             RINT_Rolodex["GET_AIR_FILTER_STATUS_L2"] = new Func<int>(data_collector.GetAirFilter_L2_INT);
+            RINT_Rolodex["GET_CRUISE_CONTROL_SPEED"] = new Func<int>(data_collector.GetCruiseControlSpeed_INT);
 
             RFLT_Rolodex["GET_SPEEDOMETER"] = new Func<float>(data_collector.GetSpeedometer_FLOAT);
             RFLT_Rolodex["GET_FUEL_LEVEL"] = new Func<float>(data_collector.GetFuelLevel_FLOAT);
@@ -82,6 +83,7 @@ namespace ST_Serial_Interface
             RFLT_Rolodex["GET_AIR_FILTER_STATUS_R2"] = new Func<float>(data_collector.GetAirFilter_R2_FLOAT);
             RFLT_Rolodex["GET_AIR_FILTER_STATUS_L1"] = new Func<float>(data_collector.GetAirFilter_L1_FLOAT);
             RFLT_Rolodex["GET_AIR_FILTER_STATUS_L2"] = new Func<float>(data_collector.GetAirFilter_L2_FLOAT);
+            RFLT_Rolodex["GET_CRUISE_CONTROL_SPEED"] = new Func<float>(data_collector.GetCruiseControlSpeed_FLOAT);
 
             RBOOL_Rolodex["GET_HEADLIGHT_STATUS"] = new Func<bool>(data_collector.GetHeadLightsStatus_BOOL);
             RBOOL_Rolodex["GET_AUXLIGHT_STATUS"] = new Func<bool>(data_collector.GetAuxLightsStatus_BOOL);

@@ -108,7 +108,7 @@ namespace ST_Serial_Interface
                 style.alignment = TextAnchor.UpperLeft;
                 style.normal.textColor = Color.yellow;
                 style.fontStyle = FontStyle.Bold;
-                GUI.Box(new Rect(Screen.width - 230, 5, 600, 600), $"ST Serial Interface started on {serial_port.Value}", style);
+                GUI.Box(new Rect(Screen.width - 235, 5, 600, 600), $"ST Serial Interface started on {serial_port.Value}", style);
             }
         }
     }
