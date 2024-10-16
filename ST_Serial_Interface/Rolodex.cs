@@ -83,7 +83,7 @@ namespace ST_Serial_Interface
             RET_Rolodex["GET_AIR_FILTER_STATUS_L1"] = data_collector.GetAirFilter_L1;
             RET_Rolodex["GET_AIR_FILTER_STATUS_L2"] = data_collector.GetAirFilter_L2;
             RET_Rolodex["GET_CRUISE_CONTROL_SPEED"] = data_collector.GetCruiseControlSpeed;
-            RET_Rolodex["GET_CIRCUIT_SUIT_STATUS"] = data_collector.GetCircuitBreakerSuitState;
+            RET_Rolodex["GET_CRUISE_CONTROL_STATUS"] = data_collector.GetCruiseControlStatus;
             RET_Rolodex["GET_HEADLIGHT_STATUS"] = data_collector.GetHeadLightsStatus;
             RET_Rolodex["GET_AUXLIGHT_STATUS"] = data_collector.GetAuxLightsStatus;
             RET_Rolodex["GET_ROOFLIGHT_STATUS"] = data_collector.GetRoofLightsStatus;
