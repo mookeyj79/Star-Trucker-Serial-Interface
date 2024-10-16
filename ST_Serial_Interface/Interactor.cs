@@ -214,7 +214,7 @@ namespace ST_Serial_Interface
             return "ACK";
         }
 
-        public string ToggleCircuitPanelGravityOn()
+        public string ToggleCircuitBreakerGravityOn()
         {
             // Verify that 'circuit_gravity_obj' exists, create if not
             if (circuit_gravity_obj == null)
@@ -230,7 +230,7 @@ namespace ST_Serial_Interface
             return "ACK";
         }
 
-        public string ToggleCircuitPanelGravityOff()
+        public string ToggleCircuitBreakerGravityOff()
         {
             // Verify that 'circuit_gravity_obj' exists, create if not
             if (circuit_gravity_obj == null)
@@ -246,7 +246,7 @@ namespace ST_Serial_Interface
             return "ACK";
         }
 
-        public string ToggleCircuitPanelShieldOn()
+        public string ToggleCircuitBreakerShieldOn()
         {
             // Verify that 'circuit_shield_obj' exists, create if not
             if (circuit_shield_obj == null)
@@ -262,7 +262,7 @@ namespace ST_Serial_Interface
             return "ACK";
         }
 
-        public string ToggleCircuitPanelShieldOff()
+        public string ToggleCircuitBreakerShieldOff()
         {
             // Verify that 'circuit_shield_obj' exists, create if not
             if (circuit_shield_obj == null)
@@ -278,7 +278,7 @@ namespace ST_Serial_Interface
             return "ACK";
         }
 
-        public string ToggleCircuitPanelTempOn()
+        public string ToggleCircuitBreakerTempOn()
         {
             // Verify that 'circuit_temp_obj' exists, create if not
             if (circuit_temp_obj == null)
@@ -294,7 +294,7 @@ namespace ST_Serial_Interface
             return "ACK";
         }
 
-        public string ToggleCircuitPanelTempOff()
+        public string ToggleCircuitBreakerTempOff()
         {
             // Verify that 'circuit_temp_obj' exists, create if not
             if (circuit_temp_obj == null)
@@ -310,7 +310,7 @@ namespace ST_Serial_Interface
             return "ACK";
         }
 
-        public string ToggleCircuitPanelOxygenOn()
+        public string ToggleCircuitBreakerOxygenOn()
         {
             // Verify that 'circuit_temp_obj' exists, create if not
             if (circuit_oxygen_obj == null)
@@ -326,7 +326,7 @@ namespace ST_Serial_Interface
             return "ACK";
         }
 
-        public string ToggleCircuitPanelOxygenOff()
+        public string ToggleCircuitBreakerOxygenOff()
         {
             // Verify that 'circuit_temp_obj' exists, create if not
             if (circuit_oxygen_obj == null)
@@ -342,7 +342,7 @@ namespace ST_Serial_Interface
             return "ACK";
         }
 
-        public string ToggleCircuitPanelMaglockOn()
+        public string ToggleCircuitBreakerMaglockOn()
         {
             // Verify that 'circuit_maglock_obj' exists, create if not
             if (circuit_maglock_obj == null)
@@ -358,7 +358,7 @@ namespace ST_Serial_Interface
             return "ACK";
         }
 
-        public string ToggleCircuitPanelMaglockOff()
+        public string ToggleCircuitBreakerMaglockOff()
         {
             // Verify that 'circuit_maglock_obj' exists, create if not
             if (circuit_maglock_obj == null)
@@ -374,7 +374,7 @@ namespace ST_Serial_Interface
             return "ACK";
         }
 
-        public string ToggleCircuitPanelCoreOn()
+        public string ToggleCircuitBreakerCoreOn()
         {
             // Verify that 'circuit_core_obj' exists, create if not
             if (circuit_core_obj == null)
@@ -390,7 +390,7 @@ namespace ST_Serial_Interface
             return "ACK";
         }
 
-        public string ToggleCircuitPanelCoreOff()
+        public string ToggleCircuitBreakerCoreOff()
         {
             // Verify that 'circuit_core_obj' exists, create if not
             if (circuit_core_obj == null)
@@ -406,7 +406,7 @@ namespace ST_Serial_Interface
             return "ACK";
         }
 
-        public string ToggleCircuitPanelSuitOn()
+        public string ToggleCircuitBreakerSuitOn()
         {
             // Verify that 'circuit_suit_obj' exists, create if not
             if (circuit_suit_obj == null)
@@ -422,7 +422,7 @@ namespace ST_Serial_Interface
             return "ACK";
         }
 
-        public string ToggleCircuitPanelSuitOff()
+        public string ToggleCircuitBreakerSuitOff()
         {
             // Verify that 'circuit_suit_obj' exists, create if not
             if (circuit_suit_obj == null)

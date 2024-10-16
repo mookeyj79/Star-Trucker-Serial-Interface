@@ -140,31 +140,31 @@ namespace ST_Serial_Interface
                 {
                     if (rolodex.CMD_Rolodex.ContainsKey(command_split[1]))
                     {
-                        rolodex.ChannelMapper(Int32.Parse(command_split[2]), rolodex.CMD_Rolodex[command_split[1]]);
+                        rolodex.ChannelMapper_CMD(Int32.Parse(command_split[2]), rolodex.CMD_Rolodex[command_split[1]]);
                         return "ACK";
                     }
                 }
                 else if (command.StartsWith("RBOOL"))
                 {
-                    if (rolodex.RBOOL_Rolodex.ContainsKey(command_split[1]))
+                    if (rolodex.RET_Rolodex.ContainsKey(command_split[1]))
                     {
-                        rolodex.ChannelMapper(Int32.Parse(command_split[2]), rolodex.RBOOL_Rolodex[command_split[1]]);
+                        rolodex.ChannelMapper_RET(Int32.Parse(command_split[2]), rolodex.RET_Rolodex[command_split[1]], typeof(bool));
                         return "ACK";
                     }
                 }
                 else if (command.StartsWith("RINT"))
                 {
-                    if (rolodex.RINT_Rolodex.ContainsKey(command_split[1]))
+                    if (rolodex.RET_Rolodex.ContainsKey(command_split[1]))
                     {
-                        rolodex.ChannelMapper(Int32.Parse(command_split[2]), rolodex.RINT_Rolodex[command_split[1]]);
+                        rolodex.ChannelMapper_RET(Int32.Parse(command_split[2]), rolodex.RET_Rolodex[command_split[1]], typeof(int));
                         return "ACK";
                     }
                 }
                 else if (command.StartsWith("RFLT"))
                 {
-                    if (rolodex.RFLT_Rolodex.ContainsKey(command_split[1]))
+                    if (rolodex.RET_Rolodex.ContainsKey(command_split[1]))
                     {
-                        rolodex.ChannelMapper(Int32.Parse(command_split[2]), rolodex.RFLT_Rolodex[command_split[1]]);
+                        rolodex.ChannelMapper_RET(Int32.Parse(command_split[2]), rolodex.RET_Rolodex[command_split[1]], typeof(float));
                         return "ACK";
                     }
                 }
@@ -179,7 +179,7 @@ namespace ST_Serial_Interface
             {
                 int channel = Int32.Parse(command_split[1]);
                 if (rolodex.Channels.ContainsKey(channel)){
-                    string resp = $"{rolodex.Channels[channel].DynamicInvoke()}";
+                    string resp = $"{rolodex.Channels[channel]()}";
                     return resp;
                 }
             }

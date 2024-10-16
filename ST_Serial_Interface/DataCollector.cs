@@ -1,5 +1,6 @@
 ﻿using ExtensionMethods;
 using Il2Cpp;
+using Il2CppFlowCanvas.Nodes;
 using Il2CppInterop.Runtime.InteropTypes.Arrays;
 using UnityEngine;
 
@@ -22,11 +23,18 @@ namespace ST_Serial_Interface
         private ToggleSwitch? frontlights_obj;
         private ToggleSwitch? lowerlights_obj;
         private ToggleSwitch? upperlights_obj;
+        private ToggleSwitch? circuit_gravity_obj;
+        private ToggleSwitch? circuit_shield_obj;
+        private ToggleSwitch? circuit_temp_obj;
+        private ToggleSwitch? circuit_oxygen_obj;
+        private ToggleSwitch? circuit_maglock_obj;
+        private ToggleSwitch? circuit_core_obj;
+        private ToggleSwitch? circuit_suit_obj;
         private CruiseControl? cruise_control_obj;
 
-        private T GetAirFilter_R1_Base<T>()
+        private float GetAirFilter_Base(int filter)
         {
-            // Generic air filter base allowing for specified type output
+            // 0 - R1, 1 - R2, 2 - L2, 3 - L1
 
             // Set default output
             float filter_status = 0;
@@ -42,137 +50,38 @@ namespace ST_Serial_Interface
             if (life_support_obj != null)
             {
                 Il2CppReferenceArray<TruckSystemsBindingAirFilterState> air_filter_levels = life_support_obj.airFilterStateBindings;
-                filter_status = air_filter_levels[0].Get().percentageEfficiency * 100;
+                filter_status = air_filter_levels[filter].Get().percentageEfficiency * 100;
             }
 
-            // Return value in given type
-            return (T)Convert.ChangeType(filter_status, typeof(T));
+            // Return value
+            return filter_status;
         }
 
-        private T GetAirFilter_R2_Base<T>()
+        public float GetAirFilter_R1()
         {
-            // Generic air filter base allowing for specified type output
-
-            // Set default output
-            float filter_status = 0;
-
-            // Verify that 'life_support_obj' exists, create if not
-            if (life_support_obj == null)
-            {
-                try { life_support_obj = GameObject.FindFirstObjectByType<LifeSupport>(); }
-                catch { life_support_obj = null; }
-            }
-
-            // Get air filter status
-            if (life_support_obj != null)
-            {
-                Il2CppReferenceArray<TruckSystemsBindingAirFilterState> air_filter_levels = life_support_obj.airFilterStateBindings;
-                filter_status = air_filter_levels[1].Get().percentageEfficiency * 100;
-            }
-
-            // Return value in given type
-            return (T)Convert.ChangeType(filter_status, typeof(T));
+            // Get filter status from the base
+            return GetAirFilter_Base(0);
         }
 
-        private T GetAirFilter_L1_Base<T>()
+        public float GetAirFilter_R2()
         {
-            // Generic air filter base allowing for specified type output
-
-            // Set default output
-            float filter_status = 0;
-
-            // Verify that 'life_support_obj' exists, create if not
-            if (life_support_obj == null)
-            {
-                try { life_support_obj = GameObject.FindFirstObjectByType<LifeSupport>(); }
-                catch { life_support_obj = null; }
-            }
-
-            // Get air filter status
-            if (life_support_obj != null)
-            {
-                Il2CppReferenceArray<TruckSystemsBindingAirFilterState> air_filter_levels = life_support_obj.airFilterStateBindings;
-                filter_status = air_filter_levels[3].Get().percentageEfficiency * 100;
-            }
-
-            // Return value in given type
-            return (T)Convert.ChangeType(filter_status, typeof(T));
+            // Get filter status from the base
+            return GetAirFilter_Base(1);
         }
 
-        private T GetAirFilter_L2_Base<T>()
+        public float GetAirFilter_L1()
         {
-            // Generic air filter base allowing for specified type output
-
-            // Set default output
-            float filter_status = 0;
-
-            // Verify that 'life_support_obj' exists, create if not
-            if (life_support_obj == null)
-            {
-                try { life_support_obj = GameObject.FindFirstObjectByType<LifeSupport>(); }
-                catch { life_support_obj = null; }
-            }
-
-            // Get air filter status
-            if (life_support_obj != null)
-            {
-                Il2CppReferenceArray<TruckSystemsBindingAirFilterState> air_filter_levels = life_support_obj.airFilterStateBindings;
-                filter_status = air_filter_levels[2].Get().percentageEfficiency * 100;
-            }
-
-            // Return value in given type
-            return (T)Convert.ChangeType(filter_status, typeof(T));
+            // Get filter status from the base
+            return GetAirFilter_Base(3);
         }
 
-        public int GetAirFilter_R1_INT()
+        public float GetAirFilter_L2()
         {
-            // Returns a 'int' variant of the air filter status
-            return GetAirFilter_R1_Base<int>();
+            // Get filter status from the base
+            return GetAirFilter_Base(2);
         }
 
-        public float GetAirFilter_R1_FLOAT()
-        {
-            // Returns a 'float' variant of the air filter status
-            return GetAirFilter_R1_Base<float>();
-        }
-
-        public int GetAirFilter_R2_INT()
-        {
-            // Returns a 'int' variant of the air filter status
-            return GetAirFilter_R2_Base<int>();
-        }
-
-        public float GetAirFilter_R2_FLOAT()
-        {
-            // Returns a 'float' variant of the air filter status
-            return GetAirFilter_R2_Base<float>();
-        }
-
-        public int GetAirFilter_L1_INT()
-        {
-            // Returns a 'int' variant of the air filter status
-            return GetAirFilter_L1_Base<int>();
-        }
-
-        public float GetAirFilter_L1_FLOAT()
-        {
-            // Returns a 'float' variant of the air filter status
-            return GetAirFilter_L1_Base<float>();
-        }
-
-        public int GetAirFilter_L2_INT()
-        {
-            // Returns a 'int' variant of the air filter status
-            return GetAirFilter_L2_Base<int>();
-        }
-
-        public float GetAirFilter_L2_FLOAT()
-        {
-            // Returns a 'float' variant of the air filter status
-            return GetAirFilter_L2_Base<float>();
-        }
-
-        private T GetSpeedometer_Base<T>()
+        public float GetSpeedometer()
         {
             // Set default output
             float speedometer = 0;
@@ -190,23 +99,11 @@ namespace ST_Serial_Interface
                 speedometer = speedometer_obj.valueBinding.Get().Map(0, (float)89.408, 0, 200);
             }
 
-            // Return value in given type
-            return (T)Convert.ChangeType(speedometer, typeof(T));
+            // Return value
+            return speedometer;
         }
 
-        public int GetSpeedometer_INT()
-        {
-            // Returns a 'int' variant of the speedometer
-            return GetSpeedometer_Base<int>();
-        }
-
-        public float GetSpeedometer_FLOAT()
-        {
-            // Returns a 'float' variant of the speedometer
-            return GetSpeedometer_Base<float>();
-        }
-
-        private T GetFuelLevel_Base<T>()
+        public float GetFuelLevel()
         {
             // Set default output
             float fuel_level = 0;
@@ -221,23 +118,11 @@ namespace ST_Serial_Interface
             // Get current fuel level
             if (fuel_level_obj != null) { fuel_level = fuel_level_obj.valueBinding.Get(); }
 
-            // Return value in given type
-            return (T)Convert.ChangeType(fuel_level, typeof(T));
+            // Return value
+            return fuel_level;
         }
 
-        public int GetFuelLevel_INT()
-        {
-            // Returns a 'int' variant of the fuel level
-            return GetFuelLevel_Base<int>();
-        }
-
-        public float GetFuelLevel_FLOAT()
-        {
-            // Returns a 'float' variant of the fuel level
-            return GetFuelLevel_Base<float>();
-        }
-
-        private T GetOxygenLevel<T>()
+        public float GetOxygenLevel()
         {
             // Set default output
             float oxygen_level = 0;
@@ -252,23 +137,11 @@ namespace ST_Serial_Interface
             // Get current oxygen level
             if (oxygen_level_obj != null) { oxygen_level = oxygen_level_obj.valueBinding.Get().Map(5, (float)19.5, 0, 100); }
 
-            // Return value in given type
-            return (T)Convert.ChangeType(oxygen_level, typeof(T));
+            // Return value
+            return oxygen_level;
         }
 
-        public int GetOxygenLevel_INT()
-        {
-            // Returns a 'int' variant of the oxygen level
-            return GetOxygenLevel<int>();
-        }
-
-        public float GetOxygenLevel_FLOAT()
-        {
-            // Returns a 'float' variant of the oxygen level
-            return GetOxygenLevel<float>();
-        }
-
-        private T GetHeadLightsStatus_Base<T>()
+        public float GetHeadLightsStatus()
         {
             // Set default output
             bool headlight_status = false;
@@ -283,17 +156,11 @@ namespace ST_Serial_Interface
             // Get current headlights status
             if (headlights_obj != null) { headlight_status = headlights_obj.activated; }
 
-            // Return value in given type
-            return (T)Convert.ChangeType(headlight_status, typeof(T));
+            // Return value
+            return Convert.ToSingle(headlight_status);
         }
 
-        public bool GetHeadLightsStatus_BOOL()
-        {
-            // Returns a 'bool' variant of the headlight status
-            return GetHeadLightsStatus_Base<bool>();
-        }
-
-        private T GetAuxLightsStatus_Base<T>()
+        public float GetAuxLightsStatus()
         {
             // Set default output
             bool auxlight_status = false;
@@ -308,17 +175,11 @@ namespace ST_Serial_Interface
             // Get current auxlights status
             if (auxlights_obj != null) { auxlight_status = auxlights_obj.activated; }
 
-            // Return value in given type
-            return (T)Convert.ChangeType(auxlight_status, typeof(T));
+            // Return value
+            return Convert.ToSingle(auxlight_status);
         }
 
-        public bool GetAuxLightsStatus_BOOL()
-        {
-            // Returns a 'bool' variant of the auxlights status
-            return GetAuxLightsStatus_Base<bool>();
-        }
-
-        private T GetRoofLightsStatus_Base<T>()
+        public float GetRoofLightsStatus()
         {
             // Set default output
             bool rooflight_status = false;
@@ -333,17 +194,11 @@ namespace ST_Serial_Interface
             // Get current rooflights status
             if (rooflights_obj != null) { rooflight_status = rooflights_obj.activated; }
 
-            // Return value in given type
-            return (T)Convert.ChangeType(rooflight_status, typeof(T));
+            // Return value
+            return Convert.ToSingle(rooflight_status);
         }
 
-        public bool GetRoofLightsStatus_BOOL()
-        {
-            // Returns a 'bool' variant of the rooflights status
-            return GetRoofLightsStatus_Base<bool>();
-        }
-
-        private T GetFrontLightsStatus_Base<T>()
+        public float GetFrontLightsStatus()
         {
             // Set default output
             bool frontlight_status = false;
@@ -358,17 +213,11 @@ namespace ST_Serial_Interface
             // Get current frontlights status
             if (frontlights_obj != null) { frontlight_status = frontlights_obj.activated; }
 
-            // Return value in given type
-            return (T)Convert.ChangeType(frontlight_status, typeof(T));
+            // Return value
+            return Convert.ToSingle(frontlight_status);
         }
 
-        public bool GetFrontLightsStatus_BOOL()
-        {
-            // Returns a 'bool' variant of the frontlights status
-            return GetFrontLightsStatus_Base<bool>();
-        }
-
-        private T GetLowerLightsStatus_Base<T>()
+        public float GetLowerLightsStatus()
         {
             // Set default output
             bool lowerlight_status = false;
@@ -383,17 +232,11 @@ namespace ST_Serial_Interface
             // Get current lowerlights status
             if (lowerlights_obj != null) { lowerlight_status = lowerlights_obj.activated; }
 
-            // Return value in given type
-            return (T)Convert.ChangeType(lowerlight_status, typeof(T));
+            // Return value
+            return Convert.ToSingle(lowerlight_status);
         }
 
-        public bool GetLowerLightsStatus_BOOL()
-        {
-            // Returns a 'bool' variant of the lowerlights status
-            return GetLowerLightsStatus_Base<bool>();
-        }
-
-        private T GetUpperLightsStatus_Base<T>()
+        public float GetUpperLightsStatus()
         {
             // Set default output
             bool upperlight_status = false;
@@ -408,18 +251,14 @@ namespace ST_Serial_Interface
             // Get current upperlights status
             if (upperlights_obj != null) { upperlight_status = upperlights_obj.activated; }
 
-            // Return value in given type
-            return (T)Convert.ChangeType(upperlight_status, typeof(T));
+            // Return value
+            return Convert.ToSingle(upperlight_status);
         }
 
-        public bool GetUpperLightsStatus_BOOL()
+        private float GetCorePowerLevel_Base(int core)
         {
-            // Returns a 'bool' variant of the upperlights status
-            return GetUpperLightsStatus_Base<bool>();
-        }
+            // 0 - Core 1, 1 - Core 2 
 
-        private T GetCorePowerLevel_C1_Base<T>()
-        {
             // Set default output
             float core_power_level = 0;
 
@@ -434,61 +273,26 @@ namespace ST_Serial_Interface
             if (core_obj != null)
             {
                 Il2CppReferenceArray<TruckSystemsBindingPowerCellState> core_power_cells = core_obj.powerCellStates;
-                core_power_level = core_power_cells[0].Get().powerPercentage;
+                core_power_level = core_power_cells[core].Get().powerPercentage;
             }
 
-            // Return value in given type
-            return (T)Convert.ChangeType(core_power_level, typeof(T));
+            // Return value
+            return core_power_level;
         }
 
-        private T GetCorePowerLevel_C2_Base<T>()
+        public float GetCorePowerLevel_1()
         {
-            // Set default output
-            float core_power_level = 0;
-
-            // Verify that 'core_obj' exists, create if not
-            if (core_obj == null)
-            {
-                try { core_obj = GameObject.FindFirstObjectByType<CorePower>(); }
-                catch { core_obj = null; }
-            }
-
-            // Get current core power level
-            if (core_obj != null)
-            {
-                Il2CppReferenceArray<TruckSystemsBindingPowerCellState> core_power_cells = core_obj.powerCellStates;
-                core_power_level = core_power_cells[1].Get().powerPercentage;
-            }
-
-            // Return value in given type
-            return (T)Convert.ChangeType(core_power_level, typeof(T));
+            // Get core power level from base
+            return GetCorePowerLevel_Base(0);
         }
 
-        public int GetCorePowerLevel_C1_INT()
+        public float GetCorePowerLevel_2()
         {
-            // Returns a 'int' variant of the core power level
-            return GetCorePowerLevel_C1_Base<int>();
+            // Get core power level from base
+            return GetCorePowerLevel_Base(1);
         }
 
-        public float GetCorePowerLevel_C1_FLOAT()
-        {
-            // Returns a 'float' variant of the core power level
-            return GetCorePowerLevel_C1_Base<float>();
-        }
-
-        public int GetCorePowerLevel_C2_INT()
-        {
-            // Returns a 'int' variant of the core power level
-            return GetCorePowerLevel_C2_Base<int>();
-        }
-
-        public float GetCorePowerLevel_C2_FLOAT()
-        {
-            // Returns a 'float' variant of the core power level
-            return GetCorePowerLevel_C2_Base<float>();
-        }
-
-        private T GetSuitPowerLevel_Base<T>()
+        public float GetSuitPowerLevel()
         {
             // Set default output
             float suit_power_level = 0;
@@ -503,23 +307,11 @@ namespace ST_Serial_Interface
             // Get current suit power level
             if (suit_obj != null) { suit_power_level = suit_obj.powerCellState.Get().powerPercentage; }
 
-            // Return value in given type
-            return (T)Convert.ChangeType(suit_power_level, typeof(T));
+            // Return value
+            return suit_power_level;
         }
 
-        public int GetSuitPowerLevel_INT()
-        {
-            // Returns a 'int' variant of the suit power level
-            return GetSuitPowerLevel_Base<int>();
-        }
-
-        public float GetSuitPowerLevel_FLOAT()
-        {
-            // Returns a 'float' variant of the suit power level
-            return GetSuitPowerLevel_Base<float>();
-        }
-
-        private T GetGravityPowerLevel_Base<T>()
+        public float GetGravityPowerLevel()
         {
             // Set default output
             float gravity_power_level = 0;
@@ -534,23 +326,11 @@ namespace ST_Serial_Interface
             // Get current gravity power level
             if (gravity_obj != null) { gravity_power_level = gravity_obj.powerCellState.Get().powerPercentage; }
 
-            // Return value in given type
-            return (T)Convert.ChangeType(gravity_power_level, typeof(T));
+            // Return value
+            return gravity_power_level;
         }
 
-        public int GetGravityPowerLevel_INT()
-        {
-            // Returns a 'int' variant of the gravity power level
-            return GetGravityPowerLevel_Base<int>();
-        }
-
-        public float GetGravityPowerLevel_FLOAT()
-        {
-            // Returns a 'float' variant of the gravity power level
-            return GetGravityPowerLevel_Base<float>();
-        }
-
-        private T GetLifeSupportPowerLevel_Base<T>()
+        public float GetLifeSupportPowerLevel()
         {
             // Set default output
             float life_support_power_level = 0;
@@ -566,23 +346,13 @@ namespace ST_Serial_Interface
             if (life_support_obj != null) { life_support_power_level = life_support_obj.powerCellState.Get().powerPercentage; }
 
             // Return value in given type
-            return (T)Convert.ChangeType(life_support_power_level, typeof(T));
+            return life_support_power_level;
         }
 
-        public int GetLifeSupportPowerLevel_INT()
+        private float GetMaglockPowerLevel_Base(int maglock)
         {
-            // Returns a 'int' variant of the life support power level
-            return GetLifeSupportPowerLevel_Base<int>();
-        }
+            // 0 - Maglock 1, 1 - Maglock 2
 
-        public float GetLifeSupportPowerLevel_FLOAT()
-        {
-            // Returns a 'float' variant of the life support power level
-            return GetLifeSupportPowerLevel_Base<float>();
-        }
-
-        private T GetMaglockPowerLevel_A_Base<T>()
-        {
             // Set default output
             float maglock_power_level = 0;
 
@@ -597,61 +367,26 @@ namespace ST_Serial_Interface
             if (maglock_obj != null)
             {
                 Il2CppReferenceArray<TruckSystemsBindingPowerCellState> maglock_power_cells = maglock_obj.powerCellStates;
-                maglock_power_level = maglock_power_cells[0].Get().powerPercentage;
+                maglock_power_level = maglock_power_cells[maglock].Get().powerPercentage;
             }
 
-            // Return value in given type
-            return (T)Convert.ChangeType(maglock_power_level, typeof(T));
+            // Return value
+            return maglock_power_level;
         }
 
-        private T GetMaglockPowerLevel_B_Base<T>()
+        public float GetMaglockPowerLevel_1()
         {
-            // Set default output
-            float maglock_power_level = 0;
-
-            // Verify that 'maglock_obj' exists, create if not
-            if (maglock_obj == null)
-            {
-                try { maglock_obj = GameObject.FindFirstObjectByType<Maglock>(); }
-                catch { maglock_obj = null; }
-            }
-
-            // Get current maglock power level
-            if (maglock_obj != null)
-            {
-                Il2CppReferenceArray<TruckSystemsBindingPowerCellState> maglock_power_cells = maglock_obj.powerCellStates;
-                maglock_power_level = maglock_power_cells[1].Get().powerPercentage;
-            }
-
-            // Return value in given type
-            return (T)Convert.ChangeType(maglock_power_level, typeof(T));
+            // Return maglock power level from base
+            return GetMaglockPowerLevel_Base(0);
         }
 
-        public int GetMaglockPowerLevel_A_INT()
+        public float GetMaglockPowerLevel_2()
         {
-            // Returns a 'int' variant of the maglock power level
-            return GetMaglockPowerLevel_A_Base<int>();
+            // Return maglock power level from base
+            return GetMaglockPowerLevel_Base(1);
         }
 
-        public float GetMaglockPowerLevel_A_FLOAT()
-        {
-            // Returns a 'float' variant of the maglock power level
-            return GetMaglockPowerLevel_A_Base<float>();
-        }
-
-        public int GetMaglockPowerLevel_B_INT()
-        {
-            // Returns a 'int' variant of the maglock power level
-            return GetMaglockPowerLevel_B_Base<int>();
-        }
-
-        public float GetMaglockPowerLevel_B_FLOAT()
-        {
-            // Returns a 'float' variant of the maglock power level
-            return GetMaglockPowerLevel_B_Base<float>();
-        }
-
-        private T GetCruiseControlSpeed_Base<T>()
+        public float GetCruiseControlSpeed()
         {
             // Set default output
             float cruise_control_speed = 0;
@@ -666,20 +401,160 @@ namespace ST_Serial_Interface
             // Get current cruise control speed
             if (cruise_control_obj != null) { cruise_control_speed = cruise_control_obj.cruiseControlSpeed.Get().Map(0, (float)89.408, 0, 200); }
 
+            // Return value
+            return cruise_control_speed;
+        }
+
+        public float GetCruiseControlStatus()
+        {
+            // Set default output
+            bool cruise_control_active = false;
+
+            // Verify that 'cruise_control_obj' exists, create if not
+            if (cruise_control_obj == null)
+            {
+                try { cruise_control_obj = GameObject.FindAnyObjectByType<CruiseControl>(); }
+                catch { cruise_control_obj = null; }
+            }
+
+            // Get current cruise control speed
+            if (cruise_control_obj != null) { cruise_control_active = cruise_control_obj.cruiseControlActive.Get(); }
+
+            // Return value
+            return Convert.ToSingle(cruise_control_active);
+        }
+
+        public float GetCircuitBreakerGravityState()
+        {
+            // Set default output
+            bool circuit_gravity_status = false;
+
+            // Verify that 'circuit_gravity_obj' exists, create if not
+            if (circuit_gravity_obj == null)
+            {
+                try { circuit_gravity_obj = GameObject.Find("StarTruck_Circuit_Panel [Gravity]").GetComponent<ToggleSwitch>(); }
+                catch { circuit_gravity_obj = null; }
+            }
+
+            // Get current gravity circuit breaker status
+            if (circuit_gravity_obj != null) { circuit_gravity_status = circuit_gravity_obj.activated; }
+
+            // Return value
+            return Convert.ToSingle(circuit_gravity_status);
+        }
+
+        public float GetCircuitBreakerShieldState()
+        {
+            // Set default output
+            bool circuit_shield_status = false;
+
+            // Verify that 'cicuit_shield_obj' exists, create if not
+            if (circuit_shield_obj == null)
+            {
+                try { circuit_shield_obj = GameObject.Find("StarTruck_Circuit_Panel [Shield]").GetComponent<ToggleSwitch>(); }
+                catch { circuit_shield_obj = null; }
+            }
+
+            // Get current gravity circuit breaker status
+            if (circuit_shield_obj != null) { circuit_shield_status = circuit_shield_obj.activated; }
+
+            // Return value
+            return Convert.ToSingle(circuit_shield_status);
+        }
+
+        public float GetCircuitBreakerTempState()
+        {
+            // Set default output
+            bool circuit_temp_status = false;
+
+            // Verify that 'cicuit_temp_obj' exists, create if not
+            if (circuit_temp_obj == null)
+            {
+                try { circuit_temp_obj = GameObject.Find("StarTruck_Circuit_Panel [Temp]").GetComponent<ToggleSwitch>(); }
+                catch { circuit_temp_obj = null; }
+            }
+
+            // Get current temp circuit breaker status
+            if (circuit_temp_obj != null) { circuit_temp_status = circuit_temp_obj.activated; }
+
+            // Return value
+            return Convert.ToSingle(circuit_temp_status);
+        }
+
+        public float GetCircuitBreakerOxygenState()
+        {
+            // Set default output
+            bool circuit_oxygen_status = false;
+
+            // Verify that 'cicuit_oxygen_obj' exists, create if not
+            if (circuit_oxygen_obj == null)
+            {
+                try { circuit_oxygen_obj = GameObject.Find("StarTruck_Circuit_Panel [Oxygen]").GetComponent<ToggleSwitch>(); }
+                catch { circuit_oxygen_obj = null; }
+            }
+
+            // Get current oxygen circuit breaker status
+            if (circuit_oxygen_obj != null) { circuit_oxygen_status = circuit_oxygen_obj.activated; }
+
+            // Return value
+            return Convert.ToSingle(circuit_oxygen_status);
+        }
+
+        public float GetCircuitBreakerMaglockState()
+        {
+            // Set default output
+            bool circuit_maglock_status = false;
+
+            // Verify that 'cicuit_maglock_obj' exists, create if not
+            if (circuit_maglock_obj == null)
+            {
+                try { circuit_maglock_obj = GameObject.Find("StarTruck_Circuit_Panel  [Maglock]").GetComponent<ToggleSwitch>(); }
+                catch { circuit_maglock_obj = null; }
+            }
+
+            // Get current maglock circuit breaker status
+            if (circuit_maglock_obj != null) { circuit_maglock_status = circuit_maglock_obj.activated; }
+
+            // Return value
+            return Convert.ToSingle(circuit_maglock_status);
+        }
+
+        public float GetCircuitBreakerCoreState()
+        {
+            // Set default output
+            bool circuit_core_status = false;
+
+            // Verify that 'cicuit_core_obj' exists, create if not
+            if (circuit_core_obj == null)
+            {
+                try { circuit_core_obj = GameObject.Find("StarTruck_Circuit_Panel [Core]").GetComponent<ToggleSwitch>(); }
+                catch { circuit_core_obj = null; }
+            }
+
+            // Get current core circuit breaker status
+            if (circuit_core_obj != null) { circuit_core_status = circuit_core_obj.activated; }
+
+            // Return value
+            return Convert.ToSingle(circuit_core_status);
+        }
+
+        public float GetCircuitBreakerSuitState()
+        {
+            // Set default output
+            bool circuit_suit_status = false;
+
+            // Verify that 'cicuit_suit_obj' exists, create if not
+            if (circuit_suit_obj == null)
+            {
+                try { circuit_suit_obj = GameObject.Find("StarTruck_Circuit_Panel [Suit]").GetComponent<ToggleSwitch>(); }
+                catch { circuit_suit_obj = null; }
+            }
+
+            // Get current suit circuit breaker status
+            if (circuit_suit_obj != null) { circuit_suit_status = circuit_suit_obj.activated; }
+
             // Return value in given type
-            return (T)Convert.ChangeType(cruise_control_speed, typeof(T));
-        }
-
-        public int GetCruiseControlSpeed_INT()
-        {
-            // Returns a 'int' variant of the cruise control speed
-            return GetCruiseControlSpeed_Base<int>();
-        }
-
-        public float GetCruiseControlSpeed_FLOAT()
-        {
-            // Returns a 'float' variant of the cruise control speed
-            return GetCruiseControlSpeed_Base<float>();
+            return Convert.ToSingle(circuit_suit_status);
         }
     }
 }
