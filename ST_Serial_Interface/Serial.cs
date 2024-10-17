@@ -107,6 +107,14 @@ namespace ST_Serial_Interface
                     {
                         phase = 2;
                         resp = "ACK";
+                        if (STSI.verbose)
+                        {
+                            STSI.Logger("Registered Functions:");
+                            foreach (KeyValuePair<int, Func<object>> entry in rolodex.Channels)
+                            {
+                                STSI.Logger($"{entry.Key}: {entry.Value.Method.Name}", "");
+                            }
+                        }
                     }
                     else if (phase == 1 && (message.StartsWith("CMD") || message.StartsWith("RBOOL") || message.StartsWith("RINT") || message.StartsWith("RFLT")))
                     {
@@ -179,8 +187,16 @@ namespace ST_Serial_Interface
             {
                 int channel = Int32.Parse(command_split[1]);
                 if (rolodex.Channels.ContainsKey(channel)){
-                    string resp = $"{rolodex.Channels[channel]()}";
-                    return resp;
+                    if (STSI.verbose)
+                    {
+                        STSI.Logger($"Executing: {rolodex.Channels[channel].Method.Name}", "");
+                    }
+                    try
+                    {
+                        string resp = $"{rolodex.Channels[channel]()}";
+                        return resp;
+                    }
+                    catch { return "DEN"; }
                 }
             }
             return "DEN";

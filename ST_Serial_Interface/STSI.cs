@@ -20,6 +20,9 @@ namespace ST_Serial_Interface
         // App state checker for the logger
         private static int phase_old = Serial.phase;
 
+        // Verbose logic
+        public static bool verbose = false;
+
         // Melon Preferences options
         private MelonPreferences_Category? serial_category;
         private MelonPreferences_Entry<string>? serial_port;
@@ -28,6 +31,7 @@ namespace ST_Serial_Interface
         private MelonPreferences_Entry<int>? serial_data_bits;
         private MelonPreferences_Entry<string>? serial_stop_bits;
         private MelonPreferences_Entry<string>? serial_handshake;
+        private MelonPreferences_Entry<bool>? serial_verbose;
 
         public override void OnLateInitializeMelon()
         {
@@ -41,6 +45,10 @@ namespace ST_Serial_Interface
             serial_data_bits = serial_category.CreateEntry<int>("Data_Bits", 8);
             serial_stop_bits = serial_category.CreateEntry<string>("Stop_Bits", "One");
             serial_handshake = serial_category.CreateEntry<string>("Handshake", "None");
+            serial_verbose = serial_category.CreateEntry<bool>("Verbose", false);
+
+            // Set verbosity
+            verbose = serial_verbose.Value;
 
             // Display available ports
             string[] portNames = SerialPort.GetPortNames();
@@ -110,6 +118,11 @@ namespace ST_Serial_Interface
                 style.fontStyle = FontStyle.Bold;
                 GUI.Box(new Rect(Screen.width - 235, 5, 600, 600), $"ST Serial Interface started on {serial_port.Value}", style);
             }
+        }
+
+        public static void Logger(string msg, string mod_name="[\u001b[36mST_Serial_Interface\u001b[0m] ")
+        {
+            MelonLogger.Msg($"{mod_name}{msg}");
         }
     }
 }
