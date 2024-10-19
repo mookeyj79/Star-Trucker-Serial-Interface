@@ -1,27 +1,19 @@
 ﻿using System.IO.Ports;
+using System.Text;
 
 namespace ST_Serial_Interface
 {
     internal class Serial
     {
-        // Determines if the serial loop should keep running
-        private static bool mod_active = false;
-
         // Current app phase
         // 0 - Initialize; 1 -Synchronization; 2 - Activate
         public static int phase = 0;
 
-        // Message received via serial
-        public static string message = "";
-
-        // Thread running the serial read function
-        private readonly Thread read_thread = new(ReadData);
+        // Serial port declaration
+        private static SerialPort? serial_port;
 
         // Builtin string comparer
         private static StringComparer string_comparer = StringComparer.OrdinalIgnoreCase;
-
-        // Serial port declaration
-        private static SerialPort? serial_port;
 
         // Rolodex declaration
         private static readonly Rolodex rolodex = new();
@@ -66,6 +58,8 @@ namespace ST_Serial_Interface
                 WriteTimeout = 500,
                 ReadTimeout = 500,
             };
+
+            serial_port.DataReceived += new SerialDataReceivedEventHandler(DataReceivedHandler);
         }
 
         public void Start()
@@ -75,8 +69,6 @@ namespace ST_Serial_Interface
                 return;
             }
             serial_port.Open();
-            mod_active = true;
-            read_thread.Start();
         }
 
         public void Stop()
@@ -85,63 +77,108 @@ namespace ST_Serial_Interface
             {
                 return;
             }
-            mod_active = false;
-            read_thread.Join();
             serial_port.Close();
         }
 
-        private static void ReadData()
+        private static void DataReceivedHandler(object sender, SerialDataReceivedEventArgs e)
         {
-            string resp;
-            while (mod_active && serial_port != null)
+            ThreadPool.QueueUserWorkItem(HandleData, sender);
+        }
+
+        private static void HandleData(object? state)
+        {
+            if (state != null)
             {
+                SerialPort sp = (SerialPort)state;
+
                 try
                 {
-                    message = serial_port.ReadLine().Trim().ToUpper();
-                    if (string_comparer.Equals(message, "SYN") && phase == 0)
+                    if (sp.BytesToRead > 0)
                     {
-                        phase = 1;
-                        resp = "ACK";
-                    }
-                    else if (string_comparer.Equals(message, "ACT") && phase == 1)
-                    {
-                        phase = 2;
-                        resp = "ACK";
-                        if (STSI.verbose)
+                        byte[] buffer = new byte[sp.BytesToRead];
+                        sp.Read(buffer, 0, buffer.Length);
+
+                        if (BinaryTools.IsBinaryData(buffer))
                         {
-                            STSI.Logger("Registered Functions:");
-                            foreach (KeyValuePair<int, Func<object>> entry in rolodex.Channels)
-                            {
-                                STSI.Logger($"{entry.Key}: {entry.Value.Method.Name}", "");
-                            }
+                            // Neither UTF-8 or ASCII characters
+                            string resp = "DEN";
+                            byte[] responseData = Encoding.UTF8.GetBytes(resp);
+                            sp.Write(responseData, 0, responseData.Length);
+                        }
+                        else
+                        {
+                            string recievedText = Encoding.UTF8.GetString(buffer);
+                            string responseText = ProcessData(recievedText);
+                            byte[] responseTextBytes = Encoding.UTF8.GetBytes(responseText);
+                            sp.Write(responseTextBytes, 0, responseTextBytes.Length);
                         }
                     }
-                    else if (phase == 1 && (message.StartsWith("CMD") || message.StartsWith("RBOOL") || message.StartsWith("RINT") || message.StartsWith("RFLT")))
-                    {
-                        resp = CommandBuilder(message);
-                    }
-                    else if (phase == 2 && message.StartsWith("EXC")){
-                        resp = CommandExecuter(message);
-                    }
-                    else if (message.StartsWith("RST"))
-                    {
-                        phase = 0;
-                        rolodex.Channels.Clear();
-                        resp = "ACK";
-                    }
-                    else
-                    {
-                        resp = "DEN";
-                    }
-                    serial_port.WriteLine(resp);
                 }
                 catch (TimeoutException) { }
             }
         }
+        
+
+        private static string ProcessData(string message)
+        {
+            string resp;
+            message = message.Trim().ToUpper();
+
+            if (string_comparer.Equals(message, "SYN") && phase == 0)
+            {
+                phase = 1;
+                resp = "ACK";
+            }
+
+            else if (string_comparer.Equals(message, "ACT") && phase == 1)
+            {
+                phase = 2;
+                resp = "ACK";
+                if (STSI.verbose)
+                {
+                    STSI.Logger($"Registered Functions: {rolodex.Channels.Count}", "");
+                    foreach (KeyValuePair<int, (Func<object> action, string name)> entry in rolodex.Channels)
+                    {
+                        STSI.Logger($"{entry.Key}: {entry.Value.name}", "");
+                    }
+                }
+            }
+
+            else if (phase == 1 && (message.StartsWith("CMD") || message.StartsWith("RBOOL") || message.StartsWith("RINT") || message.StartsWith("RFLT")))
+            {
+                resp = CommandBuilder(message);
+            }
+
+            else if (phase == 2 && message.StartsWith("EXC"))
+            {
+                resp = CommandExecuter(message);
+            }
+
+            else if (message.StartsWith("RST"))
+            {
+                phase = 0;
+                rolodex.Channels.Clear();
+                resp = "ACK";
+            }
+
+            else if (message.StartsWith("DBG="))
+            {
+                message = message.Split(new[] {'='}, 2)[1];  // Split on first occurance of '='
+                STSI.Logger(message, "");
+                resp = "ACK";
+            }
+
+            else
+            {
+                resp = "DEN";
+            }
+
+            return resp;
+        }
 
         private static string CommandBuilder(string command)
         {
-            string[] command_split = command.Split(new Char[] {'=', ','});
+            string[] command_split = command.Split(new Char[] { '=', ',' });
             if (command_split.Length == 3)
             {
                 if (command.StartsWith("CMD"))
@@ -186,17 +223,18 @@ namespace ST_Serial_Interface
             if (command_split.Length == 2)
             {
                 int channel = Int32.Parse(command_split[1]);
-                if (rolodex.Channels.ContainsKey(channel)){
-                    if (STSI.verbose)
-                    {
-                        STSI.Logger($"Executing: {rolodex.Channels[channel].Method.Name}", "");
-                    }
+                if (rolodex.Channels.TryGetValue(channel, out var channelInfo))
+                {
+                    Func<object> action = channelInfo.action;
+                    string name = channelInfo.name;
+
                     try
                     {
-                        string resp = $"{rolodex.Channels[channel]()}";
-                        return resp;
+                        object result = action();
+                        return $"{result}";
                     }
                     catch { return "DEN"; }
+
                 }
             }
             return "DEN";

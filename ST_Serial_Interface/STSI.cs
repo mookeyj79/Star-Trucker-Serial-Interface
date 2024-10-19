@@ -76,9 +76,9 @@ namespace ST_Serial_Interface
             MelonEvents.OnGUI.Subscribe(DrawInit, 100);
         }
 
-        public override void OnFixedUpdate()
+        public override void OnLateUpdate()
         {
-            base.OnFixedUpdate();
+            base.OnLateUpdate();
 
             // Logging for the app phase
             if (Serial.phase != phase_old)

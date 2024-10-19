@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Collections.Generic;
+using System.Linq.Expressions;
 
 namespace ST_Serial_Interface
 {
@@ -11,7 +12,7 @@ namespace ST_Serial_Interface
     {
         public Dictionary<string, Func<string>> CMD_Rolodex = new();
         public Dictionary<string, Func<float>> RET_Rolodex = new();
-        public Dictionary<int, Func<object>> Channels = new();
+        public Dictionary<int, (Func<object> action, string name)> Channels = new();
 
         private readonly Interactor interactor = new();
         private readonly DataCollector data_collector = new();
@@ -31,6 +32,12 @@ namespace ST_Serial_Interface
         private static float CastToFloat(Func<float> f)
         {
             return f();
+        }
+
+        private static string CastToString(Func<float> f)
+        {
+            float value = f();
+            return value.ToString();
         }
 
         public void FunctionMapper()
@@ -103,21 +110,25 @@ namespace ST_Serial_Interface
         {
             if (type == typeof(bool))
             {
-                Channels[channel] = () => CastToBool(action);
+                Channels[channel] = (action: () => CastToBool(action), name: action.Method.Name);
             }
             else if (type == typeof(int))
             {
-                Channels[channel] = () => CastToInt(action);
+                Channels[channel] = (action: () => CastToInt(action), name: action.Method.Name);
+            }
+            else if (type == typeof(string))
+            {
+                Channels[channel] = (action: () => CastToString(action), name: action.Method.Name);
             }
             else
             {
-                Channels[channel] = () => CastToFloat(action);
+                Channels[channel] = (action: () => CastToFloat(action), name: action.Method.Name);
             }
         }
 
         public void ChannelMapper_CMD(int channel, Func<string> action)
         {
-            Channels[channel] = action;
+            Channels[channel] = (action: () => action(), name: action.Method.Name);
         }
     }
 }
