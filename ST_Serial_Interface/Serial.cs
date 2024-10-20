@@ -68,7 +68,14 @@ namespace ST_Serial_Interface
             {
                 return;
             }
-            serial_port.Open();
+            try
+            {
+                serial_port.Open();
+            }
+            catch (System.IO.IOException)
+            {
+                STSI.Logger($"Unable to connect to {serial_port.PortName} :(", "");
+            }
         }
 
         public void Stop()

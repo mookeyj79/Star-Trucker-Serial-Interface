@@ -1,8 +1,9 @@
 ﻿using ExtensionMethods;
 using Il2Cpp;
-using Il2CppFlowCanvas.Nodes;
 using Il2CppInterop.Runtime.InteropTypes.Arrays;
 using UnityEngine;
+
+using System.Reflection;
 
 namespace ST_Serial_Interface
 {
@@ -31,6 +32,8 @@ namespace ST_Serial_Interface
         private ToggleSwitch? circuit_core_obj;
         private ToggleSwitch? circuit_suit_obj;
         private CruiseControl? cruise_control_obj;
+        private DashboardNeedleController? thruster_temp_left_obj;
+        private DashboardNeedleController? thruster_temp_right_obj;
 
         private float GetAirFilter_Base(int filter)
         {
@@ -553,8 +556,52 @@ namespace ST_Serial_Interface
             // Get current suit circuit breaker status
             if (circuit_suit_obj != null) { circuit_suit_status = circuit_suit_obj.activated; }
 
-            // Return value in given type
+            // Return value
             return Convert.ToSingle(circuit_suit_status);
+        }
+
+        public float GetThrusterTempLeft()
+        {
+            // Set default output
+            float thruster_temp = 0;
+
+            // Verify that 'thruster_temp_left_obj' exists, create if not
+            if (thruster_temp_left_obj == null)
+            {
+                try { thruster_temp_left_obj = GameObject.Find("StarTruck_Needle_L").GetComponent<DashboardNeedleController>(); }
+                catch { thruster_temp_left_obj = null; }
+            }
+
+            // Get current speedometer state
+            if (thruster_temp_left_obj != null)
+            {
+                thruster_temp = thruster_temp_left_obj.valueBinding.Get() * 100;
+            }
+
+            // Return value
+            return thruster_temp;
+        }
+
+        public float GetThrusterTempRight()
+        {
+            // Set default output
+            float thruster_temp = 0;
+
+            // Verify that 'thruster_temp_right_obj' exists, create if not
+            if (thruster_temp_right_obj == null)
+            {
+                try { thruster_temp_right_obj = GameObject.Find("StarTruck_Needle_R").GetComponent<DashboardNeedleController>(); }
+                catch { thruster_temp_right_obj = null; }
+            }
+
+            // Get current speedometer state
+            if (thruster_temp_right_obj != null)
+            {
+                thruster_temp = thruster_temp_right_obj.valueBinding.Get() * 100;
+            }
+
+            // Return value
+            return thruster_temp;
         }
     }
 }

@@ -5,22 +5,28 @@ namespace ST_Serial_Interface
 {
     internal class Interactor
     {
-        private ToggleSwitch? headlights_obj;
-        private ToggleSwitch? auxlights_obj;
-        private ToggleSwitch? rooflights_obj;
-        private ToggleSwitch? frontlights_obj;
-        private ToggleSwitch? lowerlights_obj;
-        private ToggleSwitch? upperlights_obj;
-        private ToggleSwitch? circuit_gravity_obj;
-        private ToggleSwitch? circuit_shield_obj;
-        private ToggleSwitch? circuit_temp_obj;
-        private ToggleSwitch? circuit_oxygen_obj;
-        private ToggleSwitch? circuit_maglock_obj;
-        private ToggleSwitch? circuit_core_obj;
-        private ToggleSwitch? circuit_suit_obj;
+        private CruiseControlSwitch? cruise_control_obj;
         private InteractTarget? horn_obj;
         private InteractTarget? shutters_obj;
-        private CruiseControlSwitch? cruise_control_obj;
+        private ToggleSwitch? alerts_obj;
+        private ToggleSwitch? auxlights_obj;
+        private ToggleSwitch? choke_left_obj;
+        private ToggleSwitch? choke_right_obj;
+        private ToggleSwitch? circuit_core_obj;
+        private ToggleSwitch? circuit_gravity_obj;
+        private ToggleSwitch? circuit_maglock_obj;
+        private ToggleSwitch? circuit_oxygen_obj;
+        private ToggleSwitch? circuit_shield_obj;
+        private ToggleSwitch? circuit_suit_obj;
+        private ToggleSwitch? circuit_temp_obj;
+        private ToggleSwitch? frontlights_obj;
+        private ToggleSwitch? headlights_obj;
+        private ToggleSwitch? lowerlights_obj;
+        private ToggleSwitch? main_thruster_left_obj;
+        private ToggleSwitch? main_thruster_right_obj;
+        private ToggleSwitch? rear_thrusters_obj;
+        private ToggleSwitch? rooflights_obj;
+        private ToggleSwitch? upperlights_obj;
 
         public string ToggleHeadLightsOn()
         {
@@ -529,6 +535,198 @@ namespace ST_Serial_Interface
 
             // Toggle shutters
             cruise_control_obj.OnDecreaseSpeedButtonPress();
+
+            // Return acknowledgement
+            return "ACK";
+        }
+
+        public string ToggleChokeLeftOn()
+        {
+            // Verify that 'choke_left_obj' exists, create if not
+            if (choke_left_obj == null)
+            {
+                try { choke_left_obj = GameObject.Find("StarTruck_Switch_Pole [ ChokeL ]").GetComponent<ToggleSwitch>(); }
+                catch { return "DEN"; }
+            }
+
+            // Toggle left choke on
+            choke_left_obj.ToggleOn();
+
+            // Return acknowledgement
+            return "ACK";
+        }
+
+        public string ToggleChokeLeftOff()
+        {
+            // Verify that 'choke_left_obj' exists, create if not
+            if (choke_left_obj == null)
+            {
+                try { choke_left_obj = GameObject.Find("StarTruck_Switch_Pole [ ChokeL ]").GetComponent<ToggleSwitch>(); }
+                catch { return "DEN"; }
+            }
+
+            // Toggle left choke off
+            choke_left_obj.ToggleOff();
+
+            // Return acknowledgement
+            return "ACK";
+        }
+
+        public string ToggleChokeRightOn()
+        {
+            // Verify that 'choke_right_obj' exists, create if not
+            if (choke_right_obj == null)
+            {
+                try { choke_right_obj = GameObject.Find("StarTruck_Switch_Pole [ ChokeR ]").GetComponent<ToggleSwitch>(); }
+                catch { return "DEN"; }
+            }
+
+            // Toggle right choke on
+            choke_right_obj.ToggleOn();
+
+            // Return acknowledgement
+            return "ACK";
+        }
+
+        public string ToggleChokeRightOff()
+        {
+            // Verify that 'choke_right_obj' exists, create if not
+            if (choke_right_obj == null)
+            {
+                try { choke_right_obj = GameObject.Find("StarTruck_Switch_Pole [ ChokeR ]").GetComponent<ToggleSwitch>(); }
+                catch { return "DEN"; }
+            }
+
+            // Toggle right choke off
+            choke_right_obj.ToggleOff();
+
+            // Return acknowledgement
+            return "ACK";
+        }
+
+        public string ToggleRearThrustersOn()
+        {
+            // Verify that 'rear_thrusters_obj' exists, create if not
+            if (rear_thrusters_obj == null)
+            {
+                try { rear_thrusters_obj = GameObject.Find("StarTruck_Switch_Pole [ Rear Thrusters ]").GetComponent<ToggleSwitch>(); }
+                catch { return "DEN"; }
+            }
+
+            // Toggle rear thrusters on
+            rear_thrusters_obj.ToggleOn();
+
+            // Return acknowledgement
+            return "ACK";
+        }
+
+        public string ToggleRearThrustersOff()
+        {
+            // Verify that 'rear_thrusters_obj' exists, create if not
+            if (rear_thrusters_obj == null)
+            {
+                try { rear_thrusters_obj = GameObject.Find("StarTruck_Switch_Pole [ Rear Thrusters ]").GetComponent<ToggleSwitch>(); }
+                catch { return "DEN"; }
+            }
+
+            // Toggle rear thrusters off
+            rear_thrusters_obj.ToggleOff();
+
+            // Return acknowledgement
+            return "ACK";
+        }
+
+        public string ToggleMainThrustersLeftOn()
+        {
+            // Verify that 'main_thruster_left_obj' exists, create if not
+            if (main_thruster_left_obj == null)
+            {
+                try { main_thruster_left_obj = GameObject.Find("StarTruck_Switch_Pole_Large [ Main L ]").GetComponent<ToggleSwitch>(); }
+                catch { return "DEN"; }
+            }
+
+            // Toggle left main thrusters on
+            main_thruster_left_obj.ToggleOn();
+
+            // Return acknowledgement
+            return "ACK";
+        }
+
+        public string ToggleMainThrustersLeftOff()
+        {
+            // Verify that 'main_thruster_left_obj' exists, create if not
+            if (main_thruster_left_obj == null)
+            {
+                try { main_thruster_left_obj = GameObject.Find("StarTruck_Switch_Pole_Large [ Main L ]").GetComponent<ToggleSwitch>(); }
+                catch { return "DEN"; }
+            }
+
+            // Toggle left main thrusters off
+            main_thruster_left_obj.ToggleOff();
+
+            // Return acknowledgement
+            return "ACK";
+        }
+
+        public string ToggleMainThrustersRightOn()
+        {
+            // Verify that 'main_thruster_right_obj' exists, create if not
+            if (main_thruster_right_obj == null)
+            {
+                try { main_thruster_right_obj = GameObject.Find("StarTruck_Switch_Pole_Large [ Main R ]").GetComponent<ToggleSwitch>(); }
+                catch { return "DEN"; }
+            }
+
+            // Toggle right main thrusters on
+            main_thruster_right_obj.ToggleOn();
+
+            // Return acknowledgement
+            return "ACK";
+        }
+
+        public string ToggleMainThrustersRightOff()
+        {
+            // Verify that 'main_thruster_right_obj' exists, create if not
+            if (main_thruster_right_obj == null)
+            {
+                try { main_thruster_right_obj = GameObject.Find("StarTruck_Switch_Pole_Large [ Main R ]").GetComponent<ToggleSwitch>(); }
+                catch { return "DEN"; }
+            }
+
+            // Toggle right main thrusters off
+            main_thruster_right_obj.ToggleOff();
+
+            // Return acknowledgement
+            return "ACK";
+        }
+
+        public string ToggleAlertsOn()
+        {
+            // Verify that 'alerts_obj' exists, create if not
+            if (alerts_obj == null)
+            {
+                try { alerts_obj = GameObject.Find("StarTruck_Switch_Pole [ Alerts ]").GetComponent<ToggleSwitch>(); }
+                catch { return "DEN"; }
+            }
+
+            // Toggle alerts on
+            alerts_obj.ToggleOn();
+
+            // Return acknowledgement
+            return "ACK";
+        }
+
+        public string ToggleAlertsOff()
+        {
+            // Verify that 'alerts_obj' exists, create if not
+            if (alerts_obj == null)
+            {
+                try { alerts_obj = GameObject.Find("StarTruck_Switch_Pole [ Alerts ]").GetComponent<ToggleSwitch>(); }
+                catch { return "DEN"; }
+            }
+
+            // Toggle alerts off
+            alerts_obj.ToggleOff();
 
             // Return acknowledgement
             return "ACK";
