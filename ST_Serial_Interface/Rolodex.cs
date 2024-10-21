@@ -74,6 +74,18 @@ namespace ST_Serial_Interface
             CMD_Rolodex["TOGGLE_CRUISE_CONTROL"] = interactor.ToggleCruiseControl;
             CMD_Rolodex["INCREASE_CRUISE_CONTROL"] = interactor.IncreaseCruiseControl;
             CMD_Rolodex["DECREASE_CRUISE_CONTROL"] = interactor.DecreaseCruiseControl;
+            CMD_Rolodex["TOGGLE_CHOKE_L_ON"] = interactor.ToggleChokeLeftOn;
+            CMD_Rolodex["TOGGLE_CHOKE_L_OFF"] = interactor.ToggleChokeLeftOff;
+            CMD_Rolodex["TOGGLE_CHOKE_R_ON"] = interactor.ToggleChokeRightOn;
+            CMD_Rolodex["TOGGLE_CHOKE_R_OFF"] = interactor.ToggleChokeRightOff;
+            CMD_Rolodex["TOGGLE_REAR_THRUSTERS_ON"] = interactor.ToggleRearThrustersOn;
+            CMD_Rolodex["TOGGLE_REAR_THRUSTERS_OFF"] = interactor.ToggleRearThrustersOff;
+            CMD_Rolodex["TOGGLE_MAIN_THRUSTERS_L_ON"] = interactor.ToggleMainThrustersLeftOn;
+            CMD_Rolodex["TOGGLE_MAIN_THRUSTERS_L_OFF"] = interactor.ToggleMainThrustersLeftOff;
+            CMD_Rolodex["TOGGLE_MAIN_THRUSTERS_R_ON"] = interactor.ToggleMainThrustersRightOn;
+            CMD_Rolodex["TOGGLE_MAIN_THRUSTERS_R_OFF"] = interactor.ToggleMainThrustersRightOff;
+            CMD_Rolodex["TOGGLE_SYSTEM_ALERTS_ON"] = interactor.ToggleAlertsOn;
+            CMD_Rolodex["TOGGLE_SYSTEM_ALERTS_OFF"] = interactor.ToggleAlertsOff;
 
             RET_Rolodex["GET_SPEEDOMETER"] = data_collector.GetSpeedometer;
             RET_Rolodex["GET_FUEL_LEVEL"] = data_collector.GetFuelLevel;
@@ -104,6 +116,8 @@ namespace ST_Serial_Interface
             RET_Rolodex["GET_CIRCUIT_MAGLOCK_STATUS"] = data_collector.GetCircuitBreakerMaglockState;
             RET_Rolodex["GET_CIRCUIT_CORE_STATUS"] = data_collector.GetCircuitBreakerCoreState;
             RET_Rolodex["GET_CIRCUIT_SUIT_STATUS"] = data_collector.GetCircuitBreakerSuitState;
+            RET_Rolodex["GET_THRUSTER_TEMP_L"] = data_collector.GetThrusterTempLeft;
+            RET_Rolodex["GET_THRUSTER_TEMP_R"] = data_collector.GetThrusterTempRight;
         }
 
         public void ChannelMapper_RET(int channel, Func<float> action, Type? type = null)
