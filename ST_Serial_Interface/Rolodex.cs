@@ -86,6 +86,7 @@ namespace ST_Serial_Interface
             CMD_Rolodex["TOGGLE_MAIN_THRUSTERS_R_OFF"] = interactor.ToggleMainThrustersRightOff;
             CMD_Rolodex["TOGGLE_SYSTEM_ALERTS_ON"] = interactor.ToggleAlertsOn;
             CMD_Rolodex["TOGGLE_SYSTEM_ALERTS_OFF"] = interactor.ToggleAlertsOff;
+            CMD_Rolodex["TOGGLE_DRIVE_ASSIST"] = interactor.ToggleDriveAssist;
 
             RET_Rolodex["GET_SPEEDOMETER"] = data_collector.GetSpeedometer;
             RET_Rolodex["GET_FUEL_LEVEL"] = data_collector.GetFuelLevel;
@@ -118,6 +119,7 @@ namespace ST_Serial_Interface
             RET_Rolodex["GET_CIRCUIT_SUIT_STATUS"] = data_collector.GetCircuitBreakerSuitState;
             RET_Rolodex["GET_THRUSTER_TEMP_L"] = data_collector.GetThrusterTempLeft;
             RET_Rolodex["GET_THRUSTER_TEMP_R"] = data_collector.GetThrusterTempRight;
+            RET_Rolodex["GET_DRIVE_ASSIST_STATUS"] = data_collector.GetDriveAssistStatus;
         }
 
         public void ChannelMapper_RET(int channel, Func<float> action, Type? type = null)

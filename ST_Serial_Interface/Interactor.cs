@@ -27,6 +27,7 @@ namespace ST_Serial_Interface
         private ToggleSwitch? rear_thrusters_obj;
         private ToggleSwitch? rooflights_obj;
         private ToggleSwitch? upperlights_obj;
+        private ToggleButton? drive_assist_obj;
 
         public string ToggleHeadLightsOn()
         {
@@ -727,6 +728,22 @@ namespace ST_Serial_Interface
 
             // Toggle alerts off
             alerts_obj.ToggleOff();
+
+            // Return acknowledgement
+            return "ACK";
+        }
+
+        public string ToggleDriveAssist()
+        {
+            // Verify that 'drive_assist_obj' exists, create if not
+            if (drive_assist_obj == null)
+            {
+                try { drive_assist_obj = GameObject.Find("StarTruck_SwitchTriangle").GetComponent<ToggleButton>(); }
+                catch { return "DEN"; }
+            }
+
+            // Toggle drive assist
+            drive_assist_obj.OnInteract();
 
             // Return acknowledgement
             return "ACK";

@@ -34,6 +34,7 @@ namespace ST_Serial_Interface
         private CruiseControl? cruise_control_obj;
         private DashboardNeedleController? thruster_temp_left_obj;
         private DashboardNeedleController? thruster_temp_right_obj;
+        private ToggleButton? drive_assist_obj;
 
         private float GetAirFilter_Base(int filter)
         {
@@ -602,6 +603,25 @@ namespace ST_Serial_Interface
 
             // Return value
             return thruster_temp;
+        }
+
+        public float GetDriveAssistStatus()
+        {
+            // Set default output
+            bool drive_assist_status = false;
+
+            // Verify that 'drive_assist_obj' exists, create if not
+            if (drive_assist_obj == null)
+            {
+                try { drive_assist_obj = GameObject.Find("StarTruck_SwitchTriangle").GetComponent<ToggleButton>(); }
+                catch { drive_assist_obj = null; }
+            }
+
+            // Get current auxlights status
+            if (drive_assist_obj != null) { drive_assist_status = drive_assist_obj.activated; }
+
+            // Return value
+            return Convert.ToSingle(drive_assist_status);
         }
     }
 }
