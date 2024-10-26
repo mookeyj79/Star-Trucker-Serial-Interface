@@ -38,6 +38,7 @@ namespace ST_Serial_Interface
         private TruckSystemsBindingPlayerLevelAndXP? player_level_obj;
         private BankManager? bank_manager_obj;
         private MaglockLever? maglock_lever_obj;
+        private ToggleSwitch? emergency_brake_obj;
 
         private float GetAirFilter_Base(int filter)
         {
@@ -658,6 +659,25 @@ namespace ST_Serial_Interface
 
             // Return value
             return Convert.ToSingle(maglock_status);
+        }
+
+        public float GetEmergencyBrakeStatus()
+        {
+            // Set default output
+            bool emergency_brake_status = false;
+
+            // Verify that 'emergency_brake_obj' exists, create if not
+            if (emergency_brake_obj == null)
+            {
+                try { emergency_brake_obj = GameObject.Find("StarTruck_Emergency_Brake_Controls_Root").GetComponent<ToggleSwitch>(); }
+                catch { emergency_brake_obj = null; }
+            }
+
+            // Get emergency brake status
+            if (emergency_brake_obj != null) { emergency_brake_status = emergency_brake_obj.activated; }
+
+            // Return value
+            return Convert.ToSingle(emergency_brake_status);
         }
     }
 }

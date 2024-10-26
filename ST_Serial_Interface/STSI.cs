@@ -97,6 +97,15 @@ namespace ST_Serial_Interface
                 }
                 phase_old = Serial.phase;
             }
+
+            if (Input.GetKeyDown(KeyCode.Keypad1))
+            {
+                interactor.ToggleEmergencyBrakeOn();
+            }
+            else if (Input.GetKeyDown(KeyCode.Keypad2))
+            {
+                interactor.ToggleEmergencyBrakeOff();
+            }
         }
 
         public override void OnDeinitializeMelon()

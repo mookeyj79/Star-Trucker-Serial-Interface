@@ -29,6 +29,7 @@ namespace ST_Serial_Interface
         private ToggleSwitch? upperlights_obj;
         private ToggleButton? drive_assist_obj;
         private MaglockLever? maglock_obj;
+        private ToggleSwitch? emergency_brake_obj;
 
         public string ToggleHeadLightsOn()
         {
@@ -761,6 +762,38 @@ namespace ST_Serial_Interface
 
             // Toggle maglock
             maglock_obj.OnInteract();
+
+            // Return acknowledgement
+            return "ACK";
+        }
+
+        public string ToggleEmergencyBrakeOn()
+        {
+            // Verify that 'emergency_brake_obj' exists, create if not
+            if (emergency_brake_obj == null)
+            {
+                try { emergency_brake_obj = GameObject.Find("StarTruck_Emergency_Brake_Controls_Root").GetComponent<ToggleSwitch>(); }
+                catch { return "DEN"; }
+            }
+
+            // Toggle emergency brake on
+            emergency_brake_obj.ToggleOn();
+
+            // Return acknowledgement
+            return "ACK";
+        }
+
+        public string ToggleEmergencyBrakeOff()
+        {
+            // Verify that 'emergency_brake_obj' exists, create if not
+            if (emergency_brake_obj == null)
+            {
+                try { emergency_brake_obj = GameObject.Find("StarTruck_Emergency_Brake_Controls_Root").GetComponent<ToggleSwitch>(); }
+                catch { return "DEN"; }
+            }
+
+            // Toggle emergency brake off
+            emergency_brake_obj.ToggleOff();
 
             // Return acknowledgement
             return "ACK";
