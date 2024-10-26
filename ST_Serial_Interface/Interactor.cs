@@ -28,6 +28,7 @@ namespace ST_Serial_Interface
         private ToggleSwitch? rooflights_obj;
         private ToggleSwitch? upperlights_obj;
         private ToggleButton? drive_assist_obj;
+        private MaglockLever? maglock_obj;
 
         public string ToggleHeadLightsOn()
         {
@@ -744,6 +745,22 @@ namespace ST_Serial_Interface
 
             // Toggle drive assist
             drive_assist_obj.OnInteract();
+
+            // Return acknowledgement
+            return "ACK";
+        }
+
+        public string ToggleMaglock()
+        {
+            // Verify that 'maglock_obj' exists, create if not
+            if (maglock_obj == null)
+            {
+                try { maglock_obj = GameObject.Find("StarTruck_MagLock_Lever_Root").GetComponent<MaglockLever>(); }
+                catch { return "DEN"; }
+            }
+
+            // Toggle maglock
+            maglock_obj.OnInteract();
 
             // Return acknowledgement
             return "ACK";

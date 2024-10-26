@@ -35,6 +35,9 @@ namespace ST_Serial_Interface
         private DashboardNeedleController? thruster_temp_left_obj;
         private DashboardNeedleController? thruster_temp_right_obj;
         private ToggleButton? drive_assist_obj;
+        private TruckSystemsBindingPlayerLevelAndXP? player_level_obj;
+        private BankManager? bank_manager_obj;
+        private MaglockLever? maglock_lever_obj;
 
         private float GetAirFilter_Base(int filter)
         {
@@ -573,7 +576,7 @@ namespace ST_Serial_Interface
                 catch { thruster_temp_left_obj = null; }
             }
 
-            // Get current speedometer state
+            // Get current thruster temp
             if (thruster_temp_left_obj != null)
             {
                 thruster_temp = thruster_temp_left_obj.valueBinding.Get() * 100;
@@ -595,7 +598,7 @@ namespace ST_Serial_Interface
                 catch { thruster_temp_right_obj = null; }
             }
 
-            // Get current speedometer state
+            // Get current thruster temp
             if (thruster_temp_right_obj != null)
             {
                 thruster_temp = thruster_temp_right_obj.valueBinding.Get() * 100;
@@ -617,11 +620,44 @@ namespace ST_Serial_Interface
                 catch { drive_assist_obj = null; }
             }
 
-            // Get current auxlights status
+            // Get drive assist status
             if (drive_assist_obj != null) { drive_assist_status = drive_assist_obj.activated; }
 
             // Return value
             return Convert.ToSingle(drive_assist_status);
+        }
+
+        public float GetMaglockStatus()
+        {
+            // Set default output
+            int maglock_status = 0;
+
+            // Verify that 'maglock_lever_obj' exists, create if not
+            if (maglock_lever_obj == null)
+            {
+                try { maglock_lever_obj = GameObject.Find("StarTruck_MagLock_Lever_Root").GetComponent<MaglockLever>(); }
+                catch { maglock_lever_obj = null; }
+            }
+
+            // Get maglock status
+            if (maglock_lever_obj != null)
+            { 
+                if (maglock_lever_obj.displayString == "Hitch")
+                {
+                    maglock_status = 1;
+                }
+                else if (maglock_lever_obj.displayString == "Unhitch")
+                {
+                    maglock_status = 2;
+                }
+                else
+                {
+                    maglock_status = 0;
+                }
+            }
+
+            // Return value
+            return Convert.ToSingle(maglock_status);
         }
     }
 }
