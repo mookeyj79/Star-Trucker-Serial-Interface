@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace ST_Serial_Interface
+﻿namespace ST_Serial_Interface
 {
     internal class BinaryTools
     {

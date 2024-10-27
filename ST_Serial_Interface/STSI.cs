@@ -83,18 +83,9 @@ namespace ST_Serial_Interface
             // Logging for the app phase
             if (Serial.phase != phase_old)
             {
-                if (Serial.phase == 0)
-                {
-                    LoggerInstance.Msg("App State: Initialize");
-                }
-                else if (Serial.phase == 1)
-                {
-                    LoggerInstance.Msg("App State: Synchronization");
-                }
-                else if (Serial.phase == 2)
-                {
-                    LoggerInstance.Msg("App State: Activate");
-                }
+                if (Serial.phase == 0) { LoggerInstance.Msg("App State: Initialize"); }
+                else if (Serial.phase == 1) { LoggerInstance.Msg("App State: Synchronization"); }
+                else if (Serial.phase == 2) { LoggerInstance.Msg("App State: Activate"); }
                 phase_old = Serial.phase;
             }
         }

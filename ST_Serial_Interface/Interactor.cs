@@ -1,818 +1,399 @@
 ﻿using Il2Cpp;
-using UnityEngine;
 
 namespace ST_Serial_Interface
 {
     internal class Interactor
     {
-        private CruiseControlSwitch? cruise_control_obj;
-        private InteractTarget? horn_obj;
-        private InteractTarget? shutters_obj;
-        private ToggleSwitch? alerts_obj;
-        private ToggleSwitch? auxlights_obj;
-        private ToggleSwitch? choke_left_obj;
-        private ToggleSwitch? choke_right_obj;
-        private ToggleSwitch? circuit_core_obj;
-        private ToggleSwitch? circuit_gravity_obj;
-        private ToggleSwitch? circuit_maglock_obj;
-        private ToggleSwitch? circuit_oxygen_obj;
-        private ToggleSwitch? circuit_shield_obj;
-        private ToggleSwitch? circuit_suit_obj;
-        private ToggleSwitch? circuit_temp_obj;
-        private ToggleSwitch? frontlights_obj;
-        private ToggleSwitch? headlights_obj;
-        private ToggleSwitch? lowerlights_obj;
-        private ToggleSwitch? main_thruster_left_obj;
-        private ToggleSwitch? main_thruster_right_obj;
-        private ToggleSwitch? rear_thrusters_obj;
-        private ToggleSwitch? rooflights_obj;
-        private ToggleSwitch? upperlights_obj;
-        private ToggleButton? drive_assist_obj;
-        private MaglockLever? maglock_obj;
-        private ToggleSwitch? emergency_brake_obj;
-        private WarpLever? warp_lever_obj;
 
-        public string ToggleHeadLightsOn()
+        public static string ToggleHeadLightsOn()
         {
-            // Verify that 'headlights_obj' exists, create if not
-            if (headlights_obj == null)
-            {
-                try { headlights_obj = GameObject.Find("StarTruck_SwitchToggle1_HeadLights").GetComponent<ToggleSwitch>(); }
-                catch { return "DEN"; }
-            }
-
-            // Toggle headlights on
-            headlights_obj.ToggleOn();
-
-            // Return acknowledgement
+            ObjectManager.headlights_obj = ObjectManager.ObjectChecker<ToggleSwitch>(ObjectManager.headlights_obj, "StarTruck_SwitchToggle1_HeadLights");
+            if (ObjectManager.headlights_obj == null) { return "DEN"; }
+            ObjectManager.headlights_obj.ToggleOn();
             return "ACK";
         }
 
-        public string ToggleHeadLightsOff()
+        public static string ToggleHeadLightsOff()
         {
-            // Verify that 'headlights_obj' exists, create if not
-            if (headlights_obj == null)
-            {
-                try { headlights_obj = GameObject.Find("StarTruck_SwitchToggle1_HeadLights").GetComponent<ToggleSwitch>(); }
-                catch { return "DEN"; }
-            }
-
-            // Toggle headlights off
-            headlights_obj.ToggleOff();
-
-            // Return acknowledgement
+            ObjectManager.headlights_obj = ObjectManager.ObjectChecker<ToggleSwitch>(ObjectManager.headlights_obj, "StarTruck_SwitchToggle1_HeadLights");
+            if (ObjectManager.headlights_obj == null) { return "DEN"; }
+            ObjectManager.headlights_obj.ToggleOff();
             return "ACK";
         }
 
-        public string ToggleAuxLightsOn()
+        public static string ToggleAuxLightsOn()
         {
-            // Verify that 'auxlights_obj' exists, create if not
-            if (auxlights_obj == null)
-            {
-                try { auxlights_obj = GameObject.Find("StarTruck_SwitchToggle2_AuxLights").GetComponent<ToggleSwitch>(); }
-                catch { return "DEN"; }
-            }
-
-            // Toggle auxlights on
-            auxlights_obj.ToggleOn();
-
-            // Return acknowledgement
+            ObjectManager.auxlights_obj = ObjectManager.ObjectChecker<ToggleSwitch>(ObjectManager.auxlights_obj, "StarTruck_SwitchToggle2_AuxLights");
+            if (ObjectManager.auxlights_obj == null) { return "DEN"; }
+            ObjectManager.auxlights_obj.ToggleOn();
             return "ACK";
         }
 
-        public string ToggleAuxLightsOff()
+        public static string ToggleAuxLightsOff()
         {
-            // Verify that 'auxlights_obj' exists, create if not
-            if (auxlights_obj == null)
-            {
-                try { auxlights_obj = GameObject.Find("StarTruck_SwitchToggle2_AuxLights").GetComponent<ToggleSwitch>(); }
-                catch { return "DEN"; }
-            }
-
-            // Toggle auxlights off
-            auxlights_obj.ToggleOff();
-
-            // Return acknowledgement
+            ObjectManager.auxlights_obj = ObjectManager.ObjectChecker<ToggleSwitch>(ObjectManager.auxlights_obj, "StarTruck_SwitchToggle2_AuxLights");
+            if (ObjectManager.auxlights_obj == null) { return "DEN"; }
+            ObjectManager.auxlights_obj.ToggleOff();
             return "ACK";
         }
 
-        public string ToggleRoofLightsOn()
+        public static string ToggleRoofLightsOn()
         {
-            // Verify that 'rooflights_obj' exists, create if not
-            if (rooflights_obj == null)
-            {
-                try { rooflights_obj = GameObject.Find("StarTruck_SwitchToggle3_RoofLights").GetComponent<ToggleSwitch>(); }
-                catch { return "DEN"; }
-            }
-
-            // Toggle rooflights on
-            rooflights_obj.ToggleOn();
-
-            // Return acknowledgement
+            ObjectManager.auxlights_obj = ObjectManager.ObjectChecker<ToggleSwitch>(ObjectManager.rooflights_obj, "StarTruck_SwitchToggle3_RoofLights");
+            if (ObjectManager.rooflights_obj == null) { return "DEN"; }
+            ObjectManager.rooflights_obj.ToggleOn();
             return "ACK";
         }
 
-        public string ToggleRoofLightsOff()
+        public static string ToggleRoofLightsOff()
         {
-            // Verify that 'rooflights_obj' exists, create if not
-            if (rooflights_obj == null)
-            {
-                try { rooflights_obj = GameObject.Find("StarTruck_SwitchToggle3_RoofLights").GetComponent<ToggleSwitch>(); }
-                catch { return "DEN"; }
-            }
-
-            // Toggle rooflights off
-            rooflights_obj.ToggleOff();
-
-            // Return acknowledgement
+            ObjectManager.auxlights_obj = ObjectManager.ObjectChecker<ToggleSwitch>(ObjectManager.rooflights_obj, "StarTruck_SwitchToggle3_RoofLights");
+            if (ObjectManager.rooflights_obj == null) { return "DEN"; }
+            ObjectManager.rooflights_obj.ToggleOff();
             return "ACK";
         }
 
-        public string ToggleFrontLightsOn()
+        public static string ToggleFrontLightsOn()
         {
-            // Verify that 'frontlights_obj' exists, create if not
-            if (frontlights_obj == null)
-            {
-                try { frontlights_obj = GameObject.Find("StarTruck_SwitchToggle4_FrontLights").GetComponent<ToggleSwitch>(); }
-                catch { return "DEN"; }
-            }
-
-            // Toggle frontlights on
-            frontlights_obj.ToggleOn();
-
-            // Return acknowledgement
+            ObjectManager.frontlights_obj = ObjectManager.ObjectChecker<ToggleSwitch>(ObjectManager.frontlights_obj, "StarTruck_SwitchToggle4_FrontLights");
+            if (ObjectManager.frontlights_obj == null) { return "DEN"; }
+            ObjectManager.frontlights_obj.ToggleOn();
             return "ACK";
         }
 
-        public string ToggleFrontLightsOff()
+        public static string ToggleFrontLightsOff()
         {
-            // Verify that 'frontlights_obj' exists, create if not
-            if (frontlights_obj == null)
-            {
-                try { frontlights_obj = GameObject.Find("StarTruck_SwitchToggle4_FrontLights").GetComponent<ToggleSwitch>(); }
-                catch { return "DEN"; }
-            }
-
-            // Toggle frontlights off
-            frontlights_obj.ToggleOff();
-
-            // Return acknowledgement
+            ObjectManager.frontlights_obj = ObjectManager.ObjectChecker<ToggleSwitch>(ObjectManager.frontlights_obj, "StarTruck_SwitchToggle4_FrontLights");
+            if (ObjectManager.frontlights_obj == null) { return "DEN"; }
+            ObjectManager.frontlights_obj.ToggleOff();
             return "ACK";
         }
 
-        public string ToggleLowerLightsOn()
+        public static string ToggleLowerLightsOn()
         {
-            // Verify that 'lowerlights_obj' exists, create if not
-            if (lowerlights_obj == null)
-            {
-                try { lowerlights_obj = GameObject.Find("StarTruck_SwitchToggle5_LowerLights").GetComponent<ToggleSwitch>(); }
-                catch { return "DEN"; }
-            }
-
-            // Toggle lowerlights on
-            lowerlights_obj.ToggleOn();
-
-            // Return acknowledgement
+            ObjectManager.lowerlights_obj = ObjectManager.ObjectChecker<ToggleSwitch>(ObjectManager.lowerlights_obj, "StarTruck_SwitchToggle5_LowerLights");
+            if (ObjectManager.lowerlights_obj == null) { return "DEN"; }
+            ObjectManager.lowerlights_obj.ToggleOn();
             return "ACK";
         }
 
-        public string ToggleLowerLightsOff()
+        public static string ToggleLowerLightsOff()
         {
-            // Verify that 'lowerlights_obj' exists, create if not
-            if (lowerlights_obj == null)
-            {
-                try { lowerlights_obj = GameObject.Find("StarTruck_SwitchToggle5_LowerLights").GetComponent<ToggleSwitch>(); }
-                catch { return "DEN"; }
-            }
-
-            // Toggle lowerlights off
-            lowerlights_obj.ToggleOff();
-
-            // Return acknowledgement
+            ObjectManager.lowerlights_obj = ObjectManager.ObjectChecker<ToggleSwitch>(ObjectManager.lowerlights_obj, "StarTruck_SwitchToggle5_LowerLights");
+            if (ObjectManager.lowerlights_obj == null) { return "DEN"; }
+            ObjectManager.lowerlights_obj.ToggleOff();
             return "ACK";
         }
 
-        public string ToggleUpperLightsOn()
+        public static string ToggleUpperLightsOn()
         {
-            // Verify that 'upperlights_obj' exists, create if not
-            if (upperlights_obj == null)
-            {
-                try { upperlights_obj = GameObject.Find("StarTruck_SwitchToggle6_UpperLights").GetComponent<ToggleSwitch>(); }
-                catch { return "DEN"; }
-            }
-
-            // Toggle upperlights on
-            upperlights_obj.ToggleOn();
-
-            // Return acknowledgement
+            ObjectManager.upperlights_obj = ObjectManager.ObjectChecker<ToggleSwitch>(ObjectManager.upperlights_obj, "StarTruck_SwitchToggle6_UpperLights");
+            if (ObjectManager.upperlights_obj == null) { return "DEN"; }
+            ObjectManager.upperlights_obj.ToggleOn();
             return "ACK";
         }
 
-        public string ToggleUpperLightsOff()
+        public static string ToggleUpperLightsOff()
         {
-            // Verify that 'upperlights_obj' exists, create if not
-            if (upperlights_obj == null)
-            {
-                try { upperlights_obj = GameObject.Find("StarTruck_SwitchToggle6_UpperLights").GetComponent<ToggleSwitch>(); }
-                catch { return "DEN"; }
-            }
-
-            // Toggle upperlights off
-            upperlights_obj.ToggleOff();
-
-            // Return acknowledgement
+            ObjectManager.upperlights_obj = ObjectManager.ObjectChecker<ToggleSwitch>(ObjectManager.upperlights_obj, "StarTruck_SwitchToggle6_UpperLights");
+            if (ObjectManager.upperlights_obj == null) { return "DEN"; }
+            ObjectManager.upperlights_obj.ToggleOff();
             return "ACK";
         }
 
-        public string ToggleCircuitBreakerGravityOn()
+        public static string ToggleCircuitBreakerGravityOn()
         {
-            // Verify that 'circuit_gravity_obj' exists, create if not
-            if (circuit_gravity_obj == null)
-            {
-                try { circuit_gravity_obj = GameObject.Find("StarTruck_Circuit_Panel [Gravity]").GetComponent<ToggleSwitch>(); }
-                catch { return "DEN"; }
-            }
-
-            // Toggle gravity cicuit breaker on
-            circuit_gravity_obj.ToggleOn();
-
-            // Return acknowledgement
+            ObjectManager.circuit_gravity_obj = ObjectManager.ObjectChecker<ToggleSwitch>(ObjectManager.circuit_gravity_obj, "StarTruck_Circuit_Panel [Gravity]");
+            if (ObjectManager.circuit_gravity_obj == null) { return "DEN"; }
+            ObjectManager.circuit_gravity_obj.ToggleOn();
             return "ACK";
         }
 
-        public string ToggleCircuitBreakerGravityOff()
+        public static string ToggleCircuitBreakerGravityOff()
         {
-            // Verify that 'circuit_gravity_obj' exists, create if not
-            if (circuit_gravity_obj == null)
-            {
-                try { circuit_gravity_obj = GameObject.Find("StarTruck_Circuit_Panel [Gravity]").GetComponent<ToggleSwitch>(); }
-                catch { return "DEN"; }
-            }
-
-            // Toggle gravity circuit breaker off
-            circuit_gravity_obj.ToggleOff();
-
-            // Return acknowledgement
+            ObjectManager.circuit_gravity_obj = ObjectManager.ObjectChecker<ToggleSwitch>(ObjectManager.circuit_gravity_obj, "StarTruck_Circuit_Panel [Gravity]");
+            if (ObjectManager.circuit_gravity_obj == null) { return "DEN"; }
+            ObjectManager.circuit_gravity_obj.ToggleOff();
             return "ACK";
         }
 
-        public string ToggleCircuitBreakerShieldOn()
+        public static string ToggleCircuitBreakerShieldOn()
         {
-            // Verify that 'circuit_shield_obj' exists, create if not
-            if (circuit_shield_obj == null)
-            {
-                try { circuit_shield_obj = GameObject.Find("StarTruck_Circuit_Panel [Shield]").GetComponent<ToggleSwitch>(); }
-                catch { return "DEN"; }
-            }
-
-            // Toggle shield circuit breaker on
-            circuit_shield_obj.ToggleOn();
-
-            // Return acknowledgement
+            ObjectManager.circuit_shield_obj = ObjectManager.ObjectChecker<ToggleSwitch>(ObjectManager.circuit_shield_obj, "StarTruck_Circuit_Panel [Shield]");
+            if (ObjectManager.circuit_shield_obj == null) { return "DEN"; }
+            ObjectManager.circuit_shield_obj.ToggleOn();
             return "ACK";
         }
 
-        public string ToggleCircuitBreakerShieldOff()
+        public static string ToggleCircuitBreakerShieldOff()
         {
-            // Verify that 'circuit_shield_obj' exists, create if not
-            if (circuit_shield_obj == null)
-            {
-                try { circuit_shield_obj = GameObject.Find("StarTruck_Circuit_Panel [Shield]").GetComponent<ToggleSwitch>(); }
-                catch { return "DEN"; }
-            }
-
-            // Toggle shield circuit breaker off
-            circuit_shield_obj.ToggleOff();
-
-            // Return acknowledgement
+            ObjectManager.circuit_shield_obj = ObjectManager.ObjectChecker<ToggleSwitch>(ObjectManager.circuit_shield_obj, "StarTruck_Circuit_Panel [Shield]");
+            if (ObjectManager.circuit_shield_obj == null) { return "DEN"; }
+            ObjectManager.circuit_shield_obj.ToggleOff();
             return "ACK";
         }
 
-        public string ToggleCircuitBreakerTempOn()
+        public static string ToggleCircuitBreakerTempOn()
         {
-            // Verify that 'circuit_temp_obj' exists, create if not
-            if (circuit_temp_obj == null)
-            {
-                try { circuit_temp_obj = GameObject.Find("StarTruck_Circuit_Panel [Temp]").GetComponent<ToggleSwitch>(); }
-                catch { return "DEN"; }
-            }
-
-            // Toggle temp circuit breaker on
-            circuit_temp_obj.ToggleOn();
-
-            // Return acknowledgement
+            ObjectManager.circuit_temp_obj = ObjectManager.ObjectChecker<ToggleSwitch>(ObjectManager.circuit_temp_obj, "StarTruck_Circuit_Panel [Temp]");
+            if (ObjectManager.circuit_temp_obj == null) { return "DEN"; }
+            ObjectManager.circuit_temp_obj.ToggleOn();
             return "ACK";
         }
 
-        public string ToggleCircuitBreakerTempOff()
+        public static string ToggleCircuitBreakerTempOff()
         {
-            // Verify that 'circuit_temp_obj' exists, create if not
-            if (circuit_temp_obj == null)
-            {
-                try { circuit_temp_obj = GameObject.Find("StarTruck_Circuit_Panel [Temp]").GetComponent<ToggleSwitch>(); }
-                catch { return "DEN"; }
-            }
-
-            // Toggle temp circuit breaker off
-            circuit_temp_obj.ToggleOff();
-
-            // Return acknowledgement
+            ObjectManager.circuit_temp_obj = ObjectManager.ObjectChecker<ToggleSwitch>(ObjectManager.circuit_temp_obj, "StarTruck_Circuit_Panel [Temp]");
+            if (ObjectManager.circuit_temp_obj == null) { return "DEN"; }
+            ObjectManager.circuit_temp_obj.ToggleOff();
             return "ACK";
         }
 
-        public string ToggleCircuitBreakerOxygenOn()
+        public static string ToggleCircuitBreakerOxygenOn()
         {
-            // Verify that 'circuit_temp_obj' exists, create if not
-            if (circuit_oxygen_obj == null)
-            {
-                try { circuit_oxygen_obj = GameObject.Find("StarTruck_Circuit_Panel [Oxygen]").GetComponent<ToggleSwitch>(); }
-                catch { return "DEN"; }
-            }
-
-            // Toggle oxygen circuit breaker on
-            circuit_oxygen_obj.ToggleOn();
-
-            // Return acknowledgement
+            ObjectManager.circuit_oxygen_obj = ObjectManager.ObjectChecker<ToggleSwitch>(ObjectManager.circuit_oxygen_obj, "StarTruck_Circuit_Panel [Oxygen]");
+            if (ObjectManager.circuit_oxygen_obj == null) { return "DEN"; }
+            ObjectManager.circuit_oxygen_obj.ToggleOn();
             return "ACK";
         }
 
-        public string ToggleCircuitBreakerOxygenOff()
+        public static string ToggleCircuitBreakerOxygenOff()
         {
-            // Verify that 'circuit_temp_obj' exists, create if not
-            if (circuit_oxygen_obj == null)
-            {
-                try { circuit_oxygen_obj = GameObject.Find("StarTruck_Circuit_Panel [Oxygen]").GetComponent<ToggleSwitch>(); }
-                catch { return "DEN"; }
-            }
-
-            // Toggle oxygen circuit breaker off
-            circuit_oxygen_obj.ToggleOff();
-
-            // Return acknowledgement
+            ObjectManager.circuit_oxygen_obj = ObjectManager.ObjectChecker<ToggleSwitch>(ObjectManager.circuit_oxygen_obj, "StarTruck_Circuit_Panel [Oxygen]");
+            if (ObjectManager.circuit_oxygen_obj == null) { return "DEN"; }
+            ObjectManager.circuit_oxygen_obj.ToggleOff();
             return "ACK";
         }
 
-        public string ToggleCircuitBreakerMaglockOn()
+        public static string ToggleCircuitBreakerMaglockOn()
         {
-            // Verify that 'circuit_maglock_obj' exists, create if not
-            if (circuit_maglock_obj == null)
-            {
-                try { circuit_maglock_obj = GameObject.Find("StarTruck_Circuit_Panel  [Maglock]").GetComponent<ToggleSwitch>(); }
-                catch { return "DEN"; }
-            }
-
-            // Toggle maglock circuit breaker on
-            circuit_maglock_obj.ToggleOn();
-
-            // Return acknowledgement
+            ObjectManager.circuit_maglock_obj = ObjectManager.ObjectChecker<ToggleSwitch>(ObjectManager.circuit_maglock_obj, "StarTruck_Circuit_Panel  [Maglock]");
+            if (ObjectManager.circuit_maglock_obj == null) { return "DEN"; }
+            ObjectManager.circuit_maglock_obj.ToggleOn();
             return "ACK";
         }
 
-        public string ToggleCircuitBreakerMaglockOff()
+        public static string ToggleCircuitBreakerMaglockOff()
         {
-            // Verify that 'circuit_maglock_obj' exists, create if not
-            if (circuit_maglock_obj == null)
-            {
-                try { circuit_maglock_obj = GameObject.Find("StarTruck_Circuit_Panel  [Maglock]").GetComponent<ToggleSwitch>(); }
-                catch { return "DEN"; }
-            }
-
-            // Toggle maglock circuit breaker off
-            circuit_maglock_obj.ToggleOff();
-
-            // Return acknowledgement
+            ObjectManager.circuit_maglock_obj = ObjectManager.ObjectChecker<ToggleSwitch>(ObjectManager.circuit_maglock_obj, "StarTruck_Circuit_Panel  [Maglock]");
+            if (ObjectManager.circuit_maglock_obj == null) { return "DEN"; }
+            ObjectManager.circuit_maglock_obj.ToggleOff();
             return "ACK";
         }
 
-        public string ToggleCircuitBreakerCoreOn()
+        public static string ToggleCircuitBreakerCoreOn()
         {
-            // Verify that 'circuit_core_obj' exists, create if not
-            if (circuit_core_obj == null)
-            {
-                try { circuit_core_obj = GameObject.Find("StarTruck_Circuit_Panel [Core]").GetComponent<ToggleSwitch>(); }
-                catch { return "DEN"; }
-            }
-
-            // Toggle core circuit breaker on
-            circuit_core_obj.ToggleOn();
-
-            // Return acknowledgement
+            ObjectManager.circuit_core_obj = ObjectManager.ObjectChecker<ToggleSwitch>(ObjectManager.circuit_core_obj, "StarTruck_Circuit_Panel [Core]");
+            if (ObjectManager.circuit_core_obj == null) { return "DEN"; }
+            ObjectManager.circuit_core_obj.ToggleOn();
             return "ACK";
         }
 
-        public string ToggleCircuitBreakerCoreOff()
+        public static string ToggleCircuitBreakerCoreOff()
         {
-            // Verify that 'circuit_core_obj' exists, create if not
-            if (circuit_core_obj == null)
-            {
-                try { circuit_core_obj = GameObject.Find("StarTruck_Circuit_Panel [Core]").GetComponent<ToggleSwitch>(); }
-                catch { return "DEN"; }
-            }
-
-            // Toggle core circuit breaker off
-            circuit_core_obj.ToggleOff();
-
-            // Return acknowledgement
+            ObjectManager.circuit_core_obj = ObjectManager.ObjectChecker<ToggleSwitch>(ObjectManager.circuit_core_obj, "StarTruck_Circuit_Panel [Core]");
+            if (ObjectManager.circuit_core_obj == null) { return "DEN"; }
+            ObjectManager.circuit_core_obj.ToggleOff();
             return "ACK";
         }
 
-        public string ToggleCircuitBreakerSuitOn()
+        public static string ToggleCircuitBreakerSuitOn()
         {
-            // Verify that 'circuit_suit_obj' exists, create if not
-            if (circuit_suit_obj == null)
-            {
-                try { circuit_suit_obj = GameObject.Find("StarTruck_Circuit_Panel [Suit]").GetComponent<ToggleSwitch>(); }
-                catch { return "DEN"; }
-            }
-
-            // Toggle suit circuit breaker on
-            circuit_suit_obj.ToggleOn();
-
-            // Return acknowledgement
+            ObjectManager.circuit_suit_obj = ObjectManager.ObjectChecker<ToggleSwitch>(ObjectManager.circuit_suit_obj, "StarTruck_Circuit_Panel [Suit]");
+            if (ObjectManager.circuit_suit_obj == null) { return "DEN"; }
+            ObjectManager.circuit_suit_obj.ToggleOn();
             return "ACK";
         }
 
-        public string ToggleCircuitBreakerSuitOff()
+        public static string ToggleCircuitBreakerSuitOff()
         {
-            // Verify that 'circuit_suit_obj' exists, create if not
-            if (circuit_suit_obj == null)
-            {
-                try { circuit_suit_obj = GameObject.Find("StarTruck_Circuit_Panel [Suit]").GetComponent<ToggleSwitch>(); }
-                catch { return "DEN"; }
-            }
-
-            // Toggle suit circuit breaker off
-            circuit_suit_obj.ToggleOff();
-
-            // Return acknowledgement
+            ObjectManager.circuit_suit_obj = ObjectManager.ObjectChecker<ToggleSwitch>(ObjectManager.circuit_suit_obj, "StarTruck_Circuit_Panel [Suit]");
+            if (ObjectManager.circuit_suit_obj == null) { return "DEN"; }
+            ObjectManager.circuit_suit_obj.ToggleOff();
             return "ACK";
         }
 
-        public string ToggleHornOn()
+        public static string ToggleHornOn()
         {
-            // Verify that 'horn_obj' exists, create if not
-            if (horn_obj == null)
-            {
-                try { horn_obj = GameObject.Find("StarTruck_Dashboard_Top_Lever_Scanner").GetComponent<InteractTarget>(); }
-                catch { return "DEN"; }
-            }
-
-            // Toggle horn on
-            horn_obj.OnPrimaryInteract(true);
-
-            // Return acknowledgement
+            ObjectManager.horn_obj = ObjectManager.ObjectChecker<InteractTarget>(ObjectManager.horn_obj, "StarTruck_Dashboard_Top_Lever_Scanner");
+            if (ObjectManager.horn_obj == null) { return "DEN"; }
+            ObjectManager.horn_obj.OnPrimaryInteract(true);
             return "ACK";
         }
 
-        public string ToggleHornOff()
+        public static string ToggleHornOff()
         {
-            // Verify that 'horn_obj' exists, create if not
-            if (horn_obj == null)
-            {
-                try { horn_obj = GameObject.Find("StarTruck_Dashboard_Top_Lever_Scanner").GetComponent<InteractTarget>(); }
-                catch { return "DEN"; }
-            }
-
-            // Toggle horn off
-            horn_obj.OnPrimaryInteract(false);
-
-            // Return acknowledgement
+            ObjectManager.horn_obj = ObjectManager.ObjectChecker<InteractTarget>(ObjectManager.horn_obj, "StarTruck_Dashboard_Top_Lever_Scanner");
+            if (ObjectManager.horn_obj == null) { return "DEN"; }
+            ObjectManager.horn_obj.OnPrimaryInteract(false);
             return "ACK";
         }
 
-        public string ToggleShutters()
+        public static string ToggleShutters()
         {
-            // Verify that 'shutters_obj' exists, create if not
-            if (shutters_obj == null)
-            {
-                try { shutters_obj = GameObject.Find("StarTruck_Dashboard_Top_Lever_Shutter").GetComponent<InteractTarget>(); }
-                catch { return "DEN"; }
-            }
-
-            // Toggle shutters
-            shutters_obj.OnPrimaryInteract(true);
-
-            // Return acknowledgement
+            ObjectManager.shutters_obj = ObjectManager.ObjectChecker<InteractTarget>(ObjectManager.shutters_obj, "StarTruck_Dashboard_Top_Lever_Shutter");
+            if (ObjectManager.shutters_obj == null) { return "DEN"; }
+            ObjectManager.shutters_obj.OnPrimaryInteract(true);
             return "ACK";
         }
 
-        public string ToggleCruiseControl()
+        public static string ToggleCruiseControl()
         {
-            // Verify that 'cruise_control_obj' exists, create if not
-            if (cruise_control_obj == null)
-            {
-                try { cruise_control_obj = GameObject.Find("StarTruck_Switch_Pole [Cruise Control Enable]").GetComponent<CruiseControlSwitch>(); }
-                catch { return "DEN"; }
-            }
-
-            // Toggle shutters
-            cruise_control_obj.OnInteract();
-
-            // Return acknowledgement
+            ObjectManager.cruise_control_switch_obj = ObjectManager.ObjectChecker<CruiseControlSwitch>(ObjectManager.cruise_control_switch_obj, "StarTruck_Switch_Pole [Cruise Control Enable]");
+            if (ObjectManager.cruise_control_switch_obj == null) { return "DEN"; }
+            ObjectManager.cruise_control_switch_obj.OnInteract();
             return "ACK";
         }
 
-        public string IncreaseCruiseControl()
+        public static string IncreaseCruiseControl()
         {
-            // Verify that 'cruise_control_obj' exists, create if not
-            if (cruise_control_obj == null)
-            {
-                try { cruise_control_obj = GameObject.Find("StarTruck_Switch_Pole [Cruise Control Enable]").GetComponent<CruiseControlSwitch>(); }
-                catch { return "DEN"; }
-            }
-
-            // Toggle shutters
-            cruise_control_obj.OnIncreaseSpeedButtonPress();
-
-            // Return acknowledgement
+            ObjectManager.cruise_control_switch_obj = ObjectManager.ObjectChecker<CruiseControlSwitch>(ObjectManager.cruise_control_switch_obj, "StarTruck_Switch_Pole [Cruise Control Enable]");
+            if (ObjectManager.cruise_control_switch_obj == null) { return "DEN"; }
+            ObjectManager.cruise_control_switch_obj.OnIncreaseSpeedButtonPress();
             return "ACK";
         }
 
-        public string DecreaseCruiseControl()
+        public static string DecreaseCruiseControl()
         {
-            // Verify that 'cruise_control_obj' exists, create if not
-            if (cruise_control_obj == null)
-            {
-                try { cruise_control_obj = GameObject.Find("StarTruck_Switch_Pole [Cruise Control Enable]").GetComponent<CruiseControlSwitch>(); }
-                catch { return "DEN"; }
-            }
-
-            // Toggle shutters
-            cruise_control_obj.OnDecreaseSpeedButtonPress();
-
-            // Return acknowledgement
+            ObjectManager.cruise_control_switch_obj = ObjectManager.ObjectChecker<CruiseControlSwitch>(ObjectManager.cruise_control_switch_obj, "StarTruck_Switch_Pole [Cruise Control Enable]");
+            if (ObjectManager.cruise_control_switch_obj == null) { return "DEN"; }
+            ObjectManager.cruise_control_switch_obj.OnDecreaseSpeedButtonPress();
             return "ACK";
         }
 
-        public string ToggleChokeLeftOn()
+        public static string ToggleChokeLeftOn()
         {
-            // Verify that 'choke_left_obj' exists, create if not
-            if (choke_left_obj == null)
-            {
-                try { choke_left_obj = GameObject.Find("StarTruck_Switch_Pole [ ChokeL ]").GetComponent<ToggleSwitch>(); }
-                catch { return "DEN"; }
-            }
-
-            // Toggle left choke on
-            choke_left_obj.ToggleOn();
-
-            // Return acknowledgement
+            ObjectManager.choke_left_obj = ObjectManager.ObjectChecker<ToggleSwitch>(ObjectManager.choke_left_obj, "StarTruck_Switch_Pole [ ChokeL ]");
+            if (ObjectManager.choke_left_obj == null) { return "DEN"; }
+            ObjectManager.choke_left_obj.ToggleOn();
             return "ACK";
         }
 
-        public string ToggleChokeLeftOff()
+        public static string ToggleChokeLeftOff()
         {
-            // Verify that 'choke_left_obj' exists, create if not
-            if (choke_left_obj == null)
-            {
-                try { choke_left_obj = GameObject.Find("StarTruck_Switch_Pole [ ChokeL ]").GetComponent<ToggleSwitch>(); }
-                catch { return "DEN"; }
-            }
-
-            // Toggle left choke off
-            choke_left_obj.ToggleOff();
-
-            // Return acknowledgement
+            ObjectManager.choke_left_obj = ObjectManager.ObjectChecker<ToggleSwitch>(ObjectManager.choke_left_obj, "StarTruck_Switch_Pole [ ChokeL ]");
+            if (ObjectManager.choke_left_obj == null) { return "DEN"; }
+            ObjectManager.choke_left_obj.ToggleOff();
             return "ACK";
         }
 
-        public string ToggleChokeRightOn()
+        public static string ToggleChokeRightOn()
         {
-            // Verify that 'choke_right_obj' exists, create if not
-            if (choke_right_obj == null)
-            {
-                try { choke_right_obj = GameObject.Find("StarTruck_Switch_Pole [ ChokeR ]").GetComponent<ToggleSwitch>(); }
-                catch { return "DEN"; }
-            }
-
-            // Toggle right choke on
-            choke_right_obj.ToggleOn();
-
-            // Return acknowledgement
+            ObjectManager.choke_right_obj = ObjectManager.ObjectChecker<ToggleSwitch>(ObjectManager.choke_right_obj, "StarTruck_Switch_Pole [ ChokeR ]");
+            if (ObjectManager.choke_right_obj == null) { return "DEN"; }
+            ObjectManager.choke_right_obj.ToggleOn();
             return "ACK";
         }
 
-        public string ToggleChokeRightOff()
+        public static string ToggleChokeRightOff()
         {
-            // Verify that 'choke_right_obj' exists, create if not
-            if (choke_right_obj == null)
-            {
-                try { choke_right_obj = GameObject.Find("StarTruck_Switch_Pole [ ChokeR ]").GetComponent<ToggleSwitch>(); }
-                catch { return "DEN"; }
-            }
-
-            // Toggle right choke off
-            choke_right_obj.ToggleOff();
-
-            // Return acknowledgement
+            ObjectManager.choke_right_obj = ObjectManager.ObjectChecker<ToggleSwitch>(ObjectManager.choke_right_obj, "StarTruck_Switch_Pole [ ChokeR ]");
+            if (ObjectManager.choke_right_obj == null) { return "DEN"; }
+            ObjectManager.choke_right_obj.ToggleOff();
             return "ACK";
         }
 
-        public string ToggleRearThrustersOn()
+        public static string ToggleRearThrustersOn()
         {
-            // Verify that 'rear_thrusters_obj' exists, create if not
-            if (rear_thrusters_obj == null)
-            {
-                try { rear_thrusters_obj = GameObject.Find("StarTruck_Switch_Pole [ Rear Thrusters ]").GetComponent<ToggleSwitch>(); }
-                catch { return "DEN"; }
-            }
-
-            // Toggle rear thrusters on
-            rear_thrusters_obj.ToggleOn();
-
-            // Return acknowledgement
+            ObjectManager.rear_thrusters_obj = ObjectManager.ObjectChecker<ToggleSwitch>(ObjectManager.rear_thrusters_obj, "StarTruck_Switch_Pole [ Rear Thrusters ]");
+            if (ObjectManager.rear_thrusters_obj == null) { return "DEN"; }
+            ObjectManager.rear_thrusters_obj.ToggleOn();
             return "ACK";
         }
 
-        public string ToggleRearThrustersOff()
+        public static string ToggleRearThrustersOff()
         {
-            // Verify that 'rear_thrusters_obj' exists, create if not
-            if (rear_thrusters_obj == null)
-            {
-                try { rear_thrusters_obj = GameObject.Find("StarTruck_Switch_Pole [ Rear Thrusters ]").GetComponent<ToggleSwitch>(); }
-                catch { return "DEN"; }
-            }
-
-            // Toggle rear thrusters off
-            rear_thrusters_obj.ToggleOff();
-
-            // Return acknowledgement
+            ObjectManager.rear_thrusters_obj = ObjectManager.ObjectChecker<ToggleSwitch>(ObjectManager.rear_thrusters_obj, "StarTruck_Switch_Pole [ Rear Thrusters ]");
+            if (ObjectManager.rear_thrusters_obj == null) { return "DEN"; }
+            ObjectManager.rear_thrusters_obj.ToggleOff();
             return "ACK";
         }
 
-        public string ToggleMainThrustersLeftOn()
+        public static string ToggleMainThrustersLeftOn()
         {
-            // Verify that 'main_thruster_left_obj' exists, create if not
-            if (main_thruster_left_obj == null)
-            {
-                try { main_thruster_left_obj = GameObject.Find("StarTruck_Switch_Pole_Large [ Main L ]").GetComponent<ToggleSwitch>(); }
-                catch { return "DEN"; }
-            }
-
-            // Toggle left main thrusters on
-            main_thruster_left_obj.ToggleOn();
-
-            // Return acknowledgement
+            ObjectManager.main_thruster_left_obj = ObjectManager.ObjectChecker<ToggleSwitch>(ObjectManager.main_thruster_left_obj, "StarTruck_Switch_Pole_Large [ Main L ]");
+            if (ObjectManager.main_thruster_left_obj == null) { return "DEN"; }
+            ObjectManager.main_thruster_left_obj.ToggleOn();
             return "ACK";
         }
 
-        public string ToggleMainThrustersLeftOff()
+        public static string ToggleMainThrustersLeftOff()
         {
-            // Verify that 'main_thruster_left_obj' exists, create if not
-            if (main_thruster_left_obj == null)
-            {
-                try { main_thruster_left_obj = GameObject.Find("StarTruck_Switch_Pole_Large [ Main L ]").GetComponent<ToggleSwitch>(); }
-                catch { return "DEN"; }
-            }
-
-            // Toggle left main thrusters off
-            main_thruster_left_obj.ToggleOff();
-
-            // Return acknowledgement
+            ObjectManager.main_thruster_left_obj = ObjectManager.ObjectChecker<ToggleSwitch>(ObjectManager.main_thruster_left_obj, "StarTruck_Switch_Pole_Large [ Main L ]");
+            if (ObjectManager.main_thruster_left_obj == null) { return "DEN"; }
+            ObjectManager.main_thruster_left_obj.ToggleOff();
             return "ACK";
         }
 
-        public string ToggleMainThrustersRightOn()
+        public static string ToggleMainThrustersRightOn()
         {
-            // Verify that 'main_thruster_right_obj' exists, create if not
-            if (main_thruster_right_obj == null)
-            {
-                try { main_thruster_right_obj = GameObject.Find("StarTruck_Switch_Pole_Large [ Main R ]").GetComponent<ToggleSwitch>(); }
-                catch { return "DEN"; }
-            }
-
-            // Toggle right main thrusters on
-            main_thruster_right_obj.ToggleOn();
-
-            // Return acknowledgement
+            ObjectManager.main_thruster_right_obj = ObjectManager.ObjectChecker<ToggleSwitch>(ObjectManager.main_thruster_right_obj, "StarTruck_Switch_Pole_Large [ Main R ]");
+            if (ObjectManager.main_thruster_right_obj == null) { return "DEN"; }
+            ObjectManager.main_thruster_right_obj.ToggleOn();
             return "ACK";
         }
 
-        public string ToggleMainThrustersRightOff()
+        public static string ToggleMainThrustersRightOff()
         {
-            // Verify that 'main_thruster_right_obj' exists, create if not
-            if (main_thruster_right_obj == null)
-            {
-                try { main_thruster_right_obj = GameObject.Find("StarTruck_Switch_Pole_Large [ Main R ]").GetComponent<ToggleSwitch>(); }
-                catch { return "DEN"; }
-            }
-
-            // Toggle right main thrusters off
-            main_thruster_right_obj.ToggleOff();
-
-            // Return acknowledgement
+            ObjectManager.main_thruster_right_obj = ObjectManager.ObjectChecker<ToggleSwitch>(ObjectManager.main_thruster_right_obj, "StarTruck_Switch_Pole_Large [ Main R ]");
+            if (ObjectManager.main_thruster_right_obj == null) { return "DEN"; }
+            ObjectManager.main_thruster_right_obj.ToggleOff();
             return "ACK";
         }
 
-        public string ToggleAlertsOn()
+        public static string ToggleAlertsOn()
         {
-            // Verify that 'alerts_obj' exists, create if not
-            if (alerts_obj == null)
-            {
-                try { alerts_obj = GameObject.Find("StarTruck_Switch_Pole [ Alerts ]").GetComponent<ToggleSwitch>(); }
-                catch { return "DEN"; }
-            }
-
-            // Toggle alerts on
-            alerts_obj.ToggleOn();
-
-            // Return acknowledgement
+            ObjectManager.alerts_obj = ObjectManager.ObjectChecker<ToggleSwitch>(ObjectManager.alerts_obj, "StarTruck_Switch_Pole [ Alerts ]");
+            if (ObjectManager.alerts_obj == null) { return "DEN"; }
+            ObjectManager.alerts_obj.ToggleOn();
             return "ACK";
         }
 
-        public string ToggleAlertsOff()
+        public static string ToggleAlertsOff()
         {
-            // Verify that 'alerts_obj' exists, create if not
-            if (alerts_obj == null)
-            {
-                try { alerts_obj = GameObject.Find("StarTruck_Switch_Pole [ Alerts ]").GetComponent<ToggleSwitch>(); }
-                catch { return "DEN"; }
-            }
-
-            // Toggle alerts off
-            alerts_obj.ToggleOff();
-
-            // Return acknowledgement
+            ObjectManager.alerts_obj = ObjectManager.ObjectChecker<ToggleSwitch>(ObjectManager.alerts_obj, "StarTruck_Switch_Pole [ Alerts ]");
+            if (ObjectManager.alerts_obj == null) { return "DEN"; }
+            ObjectManager.alerts_obj.ToggleOff();
             return "ACK";
         }
 
-        public string ToggleDriveAssist()
+        public static string ToggleDriveAssist()
         {
-            // Verify that 'drive_assist_obj' exists, create if not
-            if (drive_assist_obj == null)
-            {
-                try { drive_assist_obj = GameObject.Find("StarTruck_SwitchTriangle").GetComponent<ToggleButton>(); }
-                catch { return "DEN"; }
-            }
-
-            // Toggle drive assist
-            drive_assist_obj.OnInteract();
-
-            // Return acknowledgement
+            ObjectManager.drive_assist_obj = ObjectManager.ObjectChecker<ToggleButton>(ObjectManager.drive_assist_obj, "StarTruck_SwitchTriangle");
+            if (ObjectManager.drive_assist_obj == null) { return "DEN"; }
+            ObjectManager.drive_assist_obj.OnInteract();
             return "ACK";
         }
 
-        public string ToggleMaglock()
+        public static string ToggleMaglock()
         {
-            // Verify that 'maglock_obj' exists, create if not
-            if (maglock_obj == null)
-            {
-                try { maglock_obj = GameObject.Find("StarTruck_MagLock_Lever_Root").GetComponent<MaglockLever>(); }
-                catch { return "DEN"; }
-            }
-
-            // Toggle maglock
-            maglock_obj.OnInteract();
-
-            // Return acknowledgement
+            ObjectManager.maglock_lever_obj = ObjectManager.ObjectChecker<MaglockLever>(ObjectManager.maglock_lever_obj, "StarTruck_MagLock_Lever_Root");
+            if (ObjectManager.maglock_lever_obj == null) { return "DEN"; }
+            ObjectManager.maglock_lever_obj.OnInteract();
             return "ACK";
         }
 
-        public string ToggleEmergencyBrakeOn()
+        public static string ToggleEmergencyBrakeOn()
         {
-            // Verify that 'emergency_brake_obj' exists, create if not
-            if (emergency_brake_obj == null)
-            {
-                try { emergency_brake_obj = GameObject.Find("StarTruck_Emergency_Brake_Controls_Root").GetComponent<ToggleSwitch>(); }
-                catch { return "DEN"; }
-            }
-
-            // Toggle emergency brake on
-            emergency_brake_obj.ToggleOn();
-
-            // Return acknowledgement
+            ObjectManager.emergency_brake_obj = ObjectManager.ObjectChecker<ToggleSwitch>(ObjectManager.emergency_brake_obj, "StarTruck_Emergency_Brake_Controls_Root");
+            if (ObjectManager.emergency_brake_obj == null) { return "DEN"; }
+            ObjectManager.emergency_brake_obj.ToggleOn();
             return "ACK";
         }
 
-        public string ToggleEmergencyBrakeOff()
+        public static string ToggleEmergencyBrakeOff()
         {
-            // Verify that 'emergency_brake_obj' exists, create if not
-            if (emergency_brake_obj == null)
-            {
-                try { emergency_brake_obj = GameObject.Find("StarTruck_Emergency_Brake_Controls_Root").GetComponent<ToggleSwitch>(); }
-                catch { return "DEN"; }
-            }
-
-            // Toggle emergency brake off
-            emergency_brake_obj.ToggleOff();
-
-            // Return acknowledgement
+            ObjectManager.emergency_brake_obj = ObjectManager.ObjectChecker<ToggleSwitch>(ObjectManager.emergency_brake_obj, "StarTruck_Emergency_Brake_Controls_Root");
+            if (ObjectManager.emergency_brake_obj == null) { return "DEN"; }
+            ObjectManager.emergency_brake_obj.ToggleOff();
             return "ACK";
         }
 
         public string ToggleWarpLever()
         {
-            // Verify that 'warp_lever_obj' exists, create if not
-            if (warp_lever_obj == null)
-            {
-                try { warp_lever_obj = GameObject.Find("StarTruck_Switch_Warp").GetComponent<WarpLever>(); }
-                catch { return "DEN"; }
-            }
-
-            // Toggle warp lever
-            warp_lever_obj.OnInteract();
-
-            // Return acknowledgement
+            ObjectManager.warp_lever_obj = ObjectManager.ObjectChecker<WarpLever>(ObjectManager.warp_lever_obj, "StarTruck_Switch_Warp");
+            if (ObjectManager.warp_lever_obj == null) { return "DEN"; }
+            ObjectManager.warp_lever_obj.OnInteract();
             return "ACK";
         }
     }
