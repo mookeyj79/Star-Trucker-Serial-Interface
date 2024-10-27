@@ -4,6 +4,9 @@ This [MelonLoader](https://melonwiki.xyz) mod opens a serial interface for [*Sta
 ## How To
 - For comprehensive information on using this mod, please visit the [wiki](https://github.com/mookeyj79/Star-Trucker-Serial-Interface/wiki).
 
+## Wanted Features
+- Don't have a feature you need/want? Create an issue with the details of what you need!
+
 ## Thank You's
 - This mod draws significant inspiration from the *Objects in Space* serial protocol.
 	- [OiS Wiki](https://oiswiki.sysadninjas.net/wiki/Main_Page)
