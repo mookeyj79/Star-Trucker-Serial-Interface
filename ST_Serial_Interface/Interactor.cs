@@ -396,5 +396,87 @@ namespace ST_Serial_Interface
             ObjectManager.warp_lever_obj.OnInteract();
             return "ACK";
         }
+
+        public static string SwitchTempDial()
+        {
+            ObjectManager.temp_dial_obj = ObjectManager.ObjectChecker<DialSwitch>(ObjectManager.temp_dial_obj, "StarTruck_SwitchDialTemperature");
+            if (ObjectManager.temp_dial_obj == null) { return "DEN"; }
+            ObjectManager.temp_dial_obj.OnInteract();
+            return "ACK";
+        }
+
+        public static string SwitchBlowerDial()
+        {
+            ObjectManager.blower_dial_obj = ObjectManager.ObjectChecker<DialSwitch>(ObjectManager.blower_dial_obj, "StarTruck_SwitchDialBlower");
+            if (ObjectManager.blower_dial_obj == null) { return "DEN"; }
+            ObjectManager.blower_dial_obj.OnInteract();
+            return "ACK";
+        }
+
+        private static string SetTempDial_Base(int position)
+        {
+            ObjectManager.temp_dial_obj = ObjectManager.ObjectChecker<DialSwitch>(ObjectManager.temp_dial_obj, "StarTruck_SwitchDialTemperature");
+            if (ObjectManager.temp_dial_obj == null) { return "DEN"; }
+            ObjectManager.temp_dial_obj.dialPosition = position;
+            return "ACK";
+        }
+
+        public static string SetTempDial_0()
+        {
+            return SetTempDial_Base(0);
+        }
+
+        public static string SetTempDial_1()
+        {
+            return SetTempDial_Base(1);
+        }
+
+        public static string SetTempDial_2()
+        {
+            return SetTempDial_Base(2);
+        }
+
+        public static string SetTempDial_3()
+        {
+            return SetTempDial_Base(3);
+        }
+
+        public static string SetTempDial_4()
+        {
+            return SetTempDial_Base(4);
+        }
+
+        private static string SetBlowerDial_Base(int position)
+        {
+            ObjectManager.blower_dial_obj = ObjectManager.ObjectChecker<DialSwitch>(ObjectManager.blower_dial_obj, "StarTruck_SwitchDialBlower");
+            if (ObjectManager.blower_dial_obj == null) { return "DEN"; }
+            ObjectManager.blower_dial_obj.dialPosition = position;
+            return "ACK";
+        }
+
+        public static string SetBlowerDial_0()
+        {
+            return SetBlowerDial_Base(0);
+        }
+
+        public static string SetBlowerDial_1()
+        {
+            return SetBlowerDial_Base(1);
+        }
+
+        public static string SetBlowerDial_2()
+        {
+            return SetBlowerDial_Base(2);
+        }
+
+        public static string SetBlowerDial_3()
+        {
+            return SetBlowerDial_Base(3);
+        }
+
+        public static string SetBlowerDial_4()
+        {
+            return SetBlowerDial_Base(4);
+        }
     }
 }

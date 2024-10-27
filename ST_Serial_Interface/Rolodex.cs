@@ -80,8 +80,21 @@
             CMD_Rolodex["TOGGLE_EMERGENCY_BRAKE_ON"] = Interactor.ToggleEmergencyBrakeOn;
             CMD_Rolodex["TOGGLE_EMERGENCY_BRAKE_OFF"] = Interactor.ToggleEmergencyBrakeOff;
             CMD_Rolodex["TOGGLE_WARP_LEVER"] = Interactor.ToggleWarpLever;
+            CMD_Rolodex["SWITCH_TEMP_DIAL"] = Interactor.SwitchTempDial;
+            CMD_Rolodex["SWITCH_BLOWER_DIAL"] = Interactor.SwitchBlowerDial;
+            CMD_Rolodex["SET_TEMP_DIAL_0"] = Interactor.SetTempDial_0;
+            CMD_Rolodex["SET_TEMP_DIAL_1"] = Interactor.SetTempDial_1;
+            CMD_Rolodex["SET_TEMP_DIAL_2"] = Interactor.SetTempDial_2;
+            CMD_Rolodex["SET_TEMP_DIAL_3"] = Interactor.SetTempDial_3;
+            CMD_Rolodex["SET_TEMP_DIAL_4"] = Interactor.SetTempDial_4;
+            CMD_Rolodex["SET_BLOWER_DIAL_0"] = Interactor.SetBlowerDial_0;
+            CMD_Rolodex["SET_BLOWER_DIAL_1"] = Interactor.SetBlowerDial_1;
+            CMD_Rolodex["SET_BLOWER_DIAL_2"] = Interactor.SetBlowerDial_2;
+            CMD_Rolodex["SET_BLOWER_DIAL_3"] = Interactor.SetBlowerDial_3;
+            CMD_Rolodex["SET_BLOWER_DIAL_4"] = Interactor.SetBlowerDial_4;
 
-            RET_Rolodex["GET_SPEEDOMETER"] = DataCollector.GetSpeedometer;
+            RET_Rolodex["GET_SPEEDOMETER_MPH"] = DataCollector.GetSpeedometerMPH;
+            RET_Rolodex["GET_SPEEDOMETER_KPH"] = DataCollector.GetSpeedometerKPH;
             RET_Rolodex["GET_FUEL_LEVEL"] = DataCollector.GetFuelLevel;
             RET_Rolodex["GET_OXYGEN_LEVEL"] = DataCollector.GetOxygenLevel;
             RET_Rolodex["GET_CORE_POWER_LEVEL_1"] = DataCollector.GetCorePowerLevel_1;
@@ -116,6 +129,12 @@
             RET_Rolodex["GET_MAGLOCK_STATUS"] = DataCollector.GetMaglockStatus;
             RET_Rolodex["GET_EMERGENCY_BRAKE_STATUS"] = DataCollector.GetEmergencyBrakeStatus;
             RET_Rolodex["GET_WARP_STATUS"] = DataCollector.GetWarpStatus;
+            RET_Rolodex["GET_EXTERNAL_TEMP_F"] = DataCollector.GetExternalTempFah;
+            RET_Rolodex["GET_EXTERNAL_TEMP_C"] = DataCollector.GetExternalTempCel;
+            RET_Rolodex["GET_INTERNAL_TEMP_F"] = DataCollector.GetInternalTempFah;
+            RET_Rolodex["GET_INTERNAL_TEMP_C"] = DataCollector.GetInternalTempCel;
+            RET_Rolodex["GET_PLAYER_TEMP_COMF"] = DataCollector.GetPlayerComfortableTemp;
+            RET_Rolodex["GET_PLAYER_TEMP_SAFE"] = DataCollector.GetPlayerSafeTemp;
         }
 
         public void ChannelMapper_RET(int channel, Func<float> action, Type? type = null)

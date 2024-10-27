@@ -90,11 +90,10 @@ namespace ST_Serial_Interface
             }
         }
 
+
         public override void OnDeinitializeMelon()
         {
             base.OnDeinitializeMelon();
-
-            // Stop the serial connection
             serial.Stop();
         }
 

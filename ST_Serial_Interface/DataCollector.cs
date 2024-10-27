@@ -1,5 +1,4 @@
-﻿using ExtensionMethods;
-using Il2Cpp;
+﻿using Il2Cpp;
 using Il2CppInterop.Runtime.InteropTypes.Arrays;
 
 namespace ST_Serial_Interface
@@ -39,11 +38,19 @@ namespace ST_Serial_Interface
             return GetAirFilter_Base(2);
         }
 
-        public static float GetSpeedometer()
+        public static float GetSpeedometerMPH()
         {
             float speedometer = 0;
             ObjectManager.speedometer_obj = ObjectManager.ObjectChecker<DashboardSpeedometerNeedleController>(ObjectManager.speedometer_obj, "StarTruck_Dashboard_Needle_Large [ Speed ]");
             if (ObjectManager.speedometer_obj != null) { speedometer = ObjectManager.speedometer_obj.valueBinding.Get().Map(0, (float)89.408, 0, 200); }
+            return speedometer;
+        }
+
+        public static float GetSpeedometerKPH()
+        {
+            float speedometer = 0;
+            ObjectManager.speedometer_obj = ObjectManager.ObjectChecker<DashboardSpeedometerNeedleController>(ObjectManager.speedometer_obj, "StarTruck_Dashboard_Needle_Large [ Speed ]");
+            if (ObjectManager.speedometer_obj != null) { speedometer = ObjectManager.speedometer_obj.valueBinding.Get().Map(0, (float)89.408, 0, 200).ToKPH(); }
             return speedometer;
         }
 
@@ -304,6 +311,102 @@ namespace ST_Serial_Interface
             ObjectManager.warp_lever_obj = ObjectManager.ObjectChecker<WarpLever>(ObjectManager.warp_lever_obj, "StarTruck_Switch_Warp");
             if (ObjectManager.warp_lever_obj != null) { warp_status = ObjectManager.warp_lever_obj.IsWarpAvailable(); }
             return Convert.ToSingle(warp_status);
+        }
+
+        public static float GetSuitUCCState()
+        {
+            bool ucc_state = false;
+            ObjectManager.suit_obj = ObjectManager.ObjectChecker<SuitStation>(ObjectManager.suit_obj, "SpaceSuit");
+            if (ObjectManager.suit_obj != null) { ucc_state = ObjectManager.suit_obj.UccSlot.functioning; }
+            return Convert.ToSingle(ucc_state);
+        }
+
+        public static float GetSuitUCCStatus()
+        {
+            int ucc_state = 0;
+            ObjectManager.suit_obj = ObjectManager.ObjectChecker<SuitStation>(ObjectManager.suit_obj, "SpaceSuit");
+            if (ObjectManager.suit_obj != null) { ucc_state = ObjectManager.suit_obj.UccSlot.containedObject.damageableHitPoints; }
+            return Convert.ToSingle(ucc_state);
+        }
+
+        public static float GetGravityUCCState()
+        {
+            bool ucc_state = false;
+            ObjectManager.gravity_obj = ObjectManager.ObjectChecker<GravityCompensator>(ObjectManager.gravity_obj, "GravityCompensator");
+            if (ObjectManager.gravity_obj != null) { ucc_state = ObjectManager.gravity_obj.UccSlot.functioning; }
+            return Convert.ToSingle(ucc_state);
+        }
+
+        public static float GetGravityUCCStatus()
+        {
+            int ucc_state = 0;
+            ObjectManager.gravity_obj = ObjectManager.ObjectChecker<GravityCompensator>(ObjectManager.gravity_obj, "GravityCompensator");
+            if (ObjectManager.gravity_obj != null) { ucc_state = ObjectManager.gravity_obj.UccSlot.containedObject.damageableHitPoints; }
+            return Convert.ToSingle(ucc_state);
+        }
+
+        public static float GetClimateUCCState()
+        {
+            bool ucc_state = false;
+            ObjectManager.temp_control_obj = ObjectManager.ObjectChecker<TemperatureControlUnit>(ObjectManager.temp_control_obj, "TemperatureControl");
+            if (ObjectManager.temp_control_obj != null) { ucc_state = ObjectManager.temp_control_obj.UccSlot.functioning; }
+            return Convert.ToSingle(ucc_state);
+        }
+
+        public static float GetClimateUCCStatus()
+        {
+            int ucc_state = 0;
+            ObjectManager.temp_control_obj = ObjectManager.ObjectChecker<TemperatureControlUnit>(ObjectManager.temp_control_obj, "TemperatureControl");
+            if (ObjectManager.temp_control_obj != null) { ucc_state = ObjectManager.temp_control_obj.UccSlot.containedObject.damageableHitPoints; }
+            return Convert.ToSingle(ucc_state);
+        }
+
+        public static float GetExternalTempCel()
+        {
+            float temp = 0;
+            ObjectManager.temp_control_obj = ObjectManager.ObjectChecker<TemperatureControlUnit>(ObjectManager.temp_control_obj, "TemperatureControl");
+            if (ObjectManager.temp_control_obj != null) { temp = ObjectManager.temp_control_obj.sectorTemperatureBinding.Get(); }
+            return Convert.ToSingle(temp);
+        }
+
+        public static float GetExternalTempFah()
+        {
+            float temp = 0;
+            ObjectManager.temp_control_obj = ObjectManager.ObjectChecker<TemperatureControlUnit>(ObjectManager.temp_control_obj, "TemperatureControl");
+            if (ObjectManager.temp_control_obj != null) { temp = ObjectManager.temp_control_obj.sectorTemperatureBinding.Get().ToFahrenheit(); }
+            return Convert.ToSingle(temp);
+        }
+
+        public static float GetInternalTempCel()
+        {
+            float temp = 0;
+            ObjectManager.temp_control_obj = ObjectManager.ObjectChecker<TemperatureControlUnit>(ObjectManager.temp_control_obj, "TemperatureControl");
+            if (ObjectManager.temp_control_obj != null) { temp = ObjectManager.temp_control_obj.currentTruckTemperatureC; }
+            return Convert.ToSingle(temp);
+        }
+
+        public static float GetInternalTempFah()
+        {
+            float temp = 0;
+            ObjectManager.temp_control_obj = ObjectManager.ObjectChecker<TemperatureControlUnit>(ObjectManager.temp_control_obj, "TemperatureControl");
+            if (ObjectManager.temp_control_obj != null) { temp = ObjectManager.temp_control_obj.currentTruckTemperatureC.ToFahrenheit(); }
+            return Convert.ToSingle(temp);
+        }
+
+        public static float GetPlayerSafeTemp()
+        {
+            bool safe = false;
+            ObjectManager.temp_control_obj = ObjectManager.ObjectChecker<TemperatureControlUnit>(ObjectManager.temp_control_obj, "TemperatureControl");
+            if (ObjectManager.temp_control_obj != null) { safe = ObjectManager.temp_control_obj.PlayerAtSafeTemperature(); }
+            return Convert.ToSingle(safe);
+        }
+
+        public static float GetPlayerComfortableTemp()
+        {
+            bool safe = false;
+            ObjectManager.temp_control_obj = ObjectManager.ObjectChecker<TemperatureControlUnit>(ObjectManager.temp_control_obj, "TemperatureControl");
+            if (ObjectManager.temp_control_obj != null) { safe = ObjectManager.temp_control_obj.playerTemperatureComfortable.Get(); }
+            return Convert.ToSingle(safe);
         }
     }
 }

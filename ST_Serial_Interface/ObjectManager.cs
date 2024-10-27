@@ -42,12 +42,16 @@ namespace ST_Serial_Interface
         public static ToggleSwitch? rooflights_obj;
         public static ToggleSwitch? upperlights_obj;
         public static WarpLever? warp_lever_obj;
+        public static TemperatureControlUnit? temp_control_obj;
+        public static DialSwitch? temp_dial_obj;
+        public static DialSwitch? blower_dial_obj;
 
-        public static T ObjectChecker<T>(T? obj, string name)
+        public static T? ObjectChecker<T>(T? obj, string name)
         {
             if (obj == null)
             {
-                obj = GameObject.Find(name).GetComponent<T>();
+                try { return GameObject.Find(name).GetComponent<T>(); }
+                catch (System.NullReferenceException) { return default; };
             }
             return obj;
         }
