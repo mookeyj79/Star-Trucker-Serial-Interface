@@ -30,6 +30,7 @@ namespace ST_Serial_Interface
         private ToggleButton? drive_assist_obj;
         private MaglockLever? maglock_obj;
         private ToggleSwitch? emergency_brake_obj;
+        private WarpLever? warp_lever_obj;
 
         public string ToggleHeadLightsOn()
         {
@@ -794,6 +795,22 @@ namespace ST_Serial_Interface
 
             // Toggle emergency brake off
             emergency_brake_obj.ToggleOff();
+
+            // Return acknowledgement
+            return "ACK";
+        }
+
+        public string ToggleWarpLever()
+        {
+            // Verify that 'warp_lever_obj' exists, create if not
+            if (warp_lever_obj == null)
+            {
+                try { warp_lever_obj = GameObject.Find("StarTruck_Switch_Warp").GetComponent<WarpLever>(); }
+                catch { return "DEN"; }
+            }
+
+            // Toggle warp lever
+            warp_lever_obj.OnInteract();
 
             // Return acknowledgement
             return "ACK";

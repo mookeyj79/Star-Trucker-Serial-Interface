@@ -39,6 +39,7 @@ namespace ST_Serial_Interface
         private BankManager? bank_manager_obj;
         private MaglockLever? maglock_lever_obj;
         private ToggleSwitch? emergency_brake_obj;
+        private WarpLever? warp_lever_obj;
 
         private float GetAirFilter_Base(int filter)
         {
@@ -678,6 +679,25 @@ namespace ST_Serial_Interface
 
             // Return value
             return Convert.ToSingle(emergency_brake_status);
+        }
+
+        public float GetWarpStatus()
+        {
+            // Set default output
+            bool warp_status = false;
+
+            // Verify that 'warp_lever_obj' exists, create if not
+            if (warp_lever_obj == null)
+            {
+                try { warp_lever_obj = GameObject.Find("StarTruck_Switch_Warp").GetComponent<WarpLever>(); }
+                catch { warp_lever_obj = null; }
+            }
+
+            // Get warp status
+            if (warp_lever_obj != null) { warp_status = warp_lever_obj.IsWarpAvailable(); }
+
+            // Return value
+            return Convert.ToSingle(warp_status);
         }
     }
 }
