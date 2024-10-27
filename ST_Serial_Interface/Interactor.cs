@@ -389,7 +389,7 @@ namespace ST_Serial_Interface
             return "ACK";
         }
 
-        public string ToggleWarpLever()
+        public static string ToggleWarpLever()
         {
             ObjectManager.warp_lever_obj = ObjectManager.ObjectChecker<WarpLever>(ObjectManager.warp_lever_obj, "StarTruck_Switch_Warp");
             if (ObjectManager.warp_lever_obj == null) { return "DEN"; }

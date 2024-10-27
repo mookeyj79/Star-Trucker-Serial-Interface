@@ -77,6 +77,9 @@
             CMD_Rolodex["TOGGLE_SYSTEM_ALERTS_OFF"] = Interactor.ToggleAlertsOff;
             CMD_Rolodex["TOGGLE_DRIVE_ASSIST"] = Interactor.ToggleDriveAssist;
             CMD_Rolodex["TOGGLE_MAGLOCK"] = Interactor.ToggleMaglock;
+            CMD_Rolodex["TOGGLE_EMERGENCY_BRAKE_ON"] = Interactor.ToggleEmergencyBrakeOn;
+            CMD_Rolodex["TOGGLE_EMERGENCY_BRAKE_OFF"] = Interactor.ToggleEmergencyBrakeOff;
+            CMD_Rolodex["TOGGLE_WARP_LEVER"] = Interactor.ToggleWarpLever;
 
             RET_Rolodex["GET_SPEEDOMETER"] = DataCollector.GetSpeedometer;
             RET_Rolodex["GET_FUEL_LEVEL"] = DataCollector.GetFuelLevel;
@@ -111,6 +114,8 @@
             RET_Rolodex["GET_THRUSTER_TEMP_R"] = DataCollector.GetThrusterTempRight;
             RET_Rolodex["GET_DRIVE_ASSIST_STATUS"] = DataCollector.GetDriveAssistStatus;
             RET_Rolodex["GET_MAGLOCK_STATUS"] = DataCollector.GetMaglockStatus;
+            RET_Rolodex["GET_EMERGENCY_BRAKE_STATUS"] = DataCollector.GetEmergencyBrakeStatus;
+            RET_Rolodex["GET_WARP_STATUS"] = DataCollector.GetWarpStatus;
         }
 
         public void ChannelMapper_RET(int channel, Func<float> action, Type? type = null)
