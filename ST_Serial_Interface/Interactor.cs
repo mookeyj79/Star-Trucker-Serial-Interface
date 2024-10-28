@@ -4,7 +4,6 @@ namespace ST_Serial_Interface
 {
     internal class Interactor
     {
-
         public static string ToggleHeadLightsOn()
         {
             ObjectManager.headlights_obj = ObjectManager.ObjectChecker<ToggleSwitch>(ObjectManager.headlights_obj, "StarTruck_SwitchToggle1_HeadLights");

@@ -15,10 +15,13 @@ namespace ST_Serial_Interface
         // Builtin string comparer
         private static StringComparer string_comparer = StringComparer.OrdinalIgnoreCase;
 
+        // Create data buffer
+        private static StringBuilder data_buffer = new();
+
         // Rolodex declaration
         private static readonly Rolodex rolodex = new();
 
-        public void Setup(string port, int baud_rate, string parity, int data_bits, string stop_bits, string handshake)
+        public void Setup(string port, int baud_rate, string parity, int data_bits, string stop_bits, string handshake, int timeout)
         {
             // Sets up the serial connection
 
@@ -52,11 +55,11 @@ namespace ST_Serial_Interface
                 PortName = port,
                 BaudRate = baud_rate,
                 Parity = parity_dict[parity.ToLower()],
-                DataBits = 8,
+                DataBits = data_bits,
                 StopBits = stop_bits_dict[stop_bits.ToLower()],
                 Handshake = handshake_dict[handshake.ToLower()],
-                WriteTimeout = 500,
-                ReadTimeout = 500,
+                WriteTimeout = timeout,
+                ReadTimeout = timeout,
             };
 
             serial_port.DataReceived += new SerialDataReceivedEventHandler(DataReceivedHandler);
@@ -109,15 +112,31 @@ namespace ST_Serial_Interface
                         {
                             // Neither UTF-8 or ASCII characters
                             string resp = "DEN";
-                            byte[] responseData = Encoding.UTF8.GetBytes(resp);
-                            sp.Write(responseData, 0, responseData.Length);
+                            byte[] response_data = Encoding.UTF8.GetBytes(resp);
+                            sp.Write(response_data, 0, response_data.Length);
                         }
                         else
                         {
-                            string recievedText = Encoding.UTF8.GetString(buffer);
-                            string responseText = ProcessData(recievedText);
-                            byte[] responseTextBytes = Encoding.UTF8.GetBytes(responseText);
-                            sp.Write(responseTextBytes, 0, responseTextBytes.Length);
+                            data_buffer.Append(Encoding.UTF8.GetString(buffer));
+                            while (data_buffer.ToString().Contains('\n'))
+                            {
+                                string full_message = data_buffer.ToString();
+                                int delimeter_index = full_message.IndexOf('\n');
+                                string received_text = full_message[..delimeter_index].Trim();
+
+                                data_buffer.Remove(0, delimeter_index + 1);
+
+                                string response_text = ProcessData(received_text);
+
+                                if (STSI.verbose && response_text == "DEN")
+                                {
+                                    STSI.Logger($"{received_text} : DEN");
+                                }
+
+                                response_text += '\n';
+                                byte[] response_text_bytes = Encoding.UTF8.GetBytes(response_text);
+                                sp.Write(response_text_bytes, 0, response_text_bytes.Length);
+                            }
                         }
                     }
                 }

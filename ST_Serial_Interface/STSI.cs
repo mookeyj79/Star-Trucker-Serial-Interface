@@ -31,6 +31,7 @@ namespace ST_Serial_Interface
         private MelonPreferences_Entry<int>? serial_data_bits;
         private MelonPreferences_Entry<string>? serial_stop_bits;
         private MelonPreferences_Entry<string>? serial_handshake;
+        private MelonPreferences_Entry<int>? serial_timeout;
         private MelonPreferences_Entry<bool>? serial_verbose;
 
         public override void OnLateInitializeMelon()
@@ -45,6 +46,7 @@ namespace ST_Serial_Interface
             serial_data_bits = serial_category.CreateEntry<int>("Data_Bits", 8);
             serial_stop_bits = serial_category.CreateEntry<string>("Stop_Bits", "One");
             serial_handshake = serial_category.CreateEntry<string>("Handshake", "None");
+            serial_timeout = serial_category.CreateEntry<int>("Timeout", 5000);
             serial_verbose = serial_category.CreateEntry<bool>("Verbose", false);
 
             // Set verbosity
@@ -65,7 +67,8 @@ namespace ST_Serial_Interface
                 serial_parity.Value,
                 serial_data_bits.Value,
                 serial_stop_bits.Value,
-                serial_handshake.Value
+                serial_handshake.Value,
+                serial_timeout.Value
             );
 
             // Start the serial connection
@@ -76,9 +79,9 @@ namespace ST_Serial_Interface
             MelonEvents.OnGUI.Subscribe(DrawInit, 100);
         }
 
-        public override void OnLateUpdate()
+        public override void OnUpdate()
         {
-            base.OnLateUpdate();
+            base.OnUpdate();
 
             // Logging for the app phase
             if (Serial.phase != phase_old)

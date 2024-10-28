@@ -395,18 +395,18 @@ namespace ST_Serial_Interface
 
         public static float GetPlayerSafeTemp()
         {
-            bool safe = false;
+            bool player_safe = false;
             ObjectManager.temp_control_obj = ObjectManager.ObjectChecker<TemperatureControlUnit>(ObjectManager.temp_control_obj, "TemperatureControl");
-            if (ObjectManager.temp_control_obj != null) { safe = ObjectManager.temp_control_obj.PlayerAtSafeTemperature(); }
-            return Convert.ToSingle(safe);
+            if (ObjectManager.temp_control_obj != null) { player_safe = ObjectManager.temp_control_obj.PlayerAtSafeTemperature(); }
+            return Convert.ToSingle(player_safe);
         }
 
         public static float GetPlayerComfortableTemp()
         {
-            bool safe = false;
+            bool player_comf = false;
             ObjectManager.temp_control_obj = ObjectManager.ObjectChecker<TemperatureControlUnit>(ObjectManager.temp_control_obj, "TemperatureControl");
-            if (ObjectManager.temp_control_obj != null) { safe = ObjectManager.temp_control_obj.playerTemperatureComfortable.Get(); }
-            return Convert.ToSingle(safe);
+            if (ObjectManager.temp_control_obj != null) { player_comf = ObjectManager.temp_control_obj.playerTemperatureComfortable.Get(); }
+            return Convert.ToSingle(player_comf);
         }
     }
 }
