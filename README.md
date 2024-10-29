@@ -7,6 +7,9 @@ This [MelonLoader](https://melonwiki.xyz) mod opens a serial interface for [*Sta
 ## Wanted Features
 - Don't have a feature you need/want? Create an issue with the details of what you need! I'll get to it as soon as I can.
 
+## Nexus Mods
+This mod is also available on NexusMods [here](https://www.nexusmods.com/startrucker/mods/3)!
+
 ## Thank You's
 - This mod draws significant inspiration from the *Objects in Space* serial protocol.
 	- [OiS Wiki](https://oiswiki.sysadninjas.net/wiki/Main_Page)
