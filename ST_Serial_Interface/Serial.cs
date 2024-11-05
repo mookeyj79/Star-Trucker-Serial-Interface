@@ -1,4 +1,5 @@
-﻿using System.IO.Ports;
+﻿using System.Collections.Concurrent;
+using System.IO.Ports;
 using System.Text;
 
 namespace ST_Serial_Interface
@@ -13,257 +14,232 @@ namespace ST_Serial_Interface
         private static SerialPort? serial_port;
 
         // Builtin string comparer
-        private static StringComparer string_comparer = StringComparer.OrdinalIgnoreCase;
+        private static readonly StringComparer string_comparer = StringComparer.OrdinalIgnoreCase;
 
-        // Create data buffer
-        private static StringBuilder data_buffer = new();
+        // Thread related objects
+        private static readonly BlockingCollection<SerialPort> queue = new();
+        private static readonly SemaphoreSlim semaphore = new(3);
+        private static readonly object buffer_lock = new();
+        private static readonly StringBuilder data_buffer = new();
+
 
         // Rolodex declaration
         private static readonly Rolodex rolodex = new();
 
-        public void Setup(string port, int baud_rate, string parity, int data_bits, string stop_bits, string handshake, int timeout)
+        static Serial()
         {
-            // Sets up the serial connection
-
-            // Serial settings
-            Dictionary<string, Parity> parity_dict = new();
-            Dictionary<string, StopBits> stop_bits_dict = new();
-            Dictionary<string, Handshake> handshake_dict = new();
-
-            parity_dict["none"] = Parity.None;
-            parity_dict["odd"] = Parity.Odd;
-            parity_dict["even"] = Parity.Even;
-            parity_dict["mark"] = Parity.Mark;
-            parity_dict["space"] = Parity.Space;
-
-            stop_bits_dict["none"] = StopBits.None;
-            stop_bits_dict["one"] = StopBits.One;
-            stop_bits_dict["two"] = StopBits.Two;
-            stop_bits_dict["onepointfive"] = StopBits.OnePointFive;
-
-            handshake_dict["none"] = Handshake.None;
-            handshake_dict["xonxoff"] = Handshake.XOnXOff;
-            handshake_dict["requesttosend"] = Handshake.RequestToSend;
-            handshake_dict["requesttosendxonxoff"] = Handshake.RequestToSendXOnXOff;
-
-            // Map rolodex functions to dictionaries
-            rolodex.FunctionMapper();
-
-            // Set up serial port
-            serial_port = new SerialPort()
-            {
-                PortName = port,
-                BaudRate = baud_rate,
-                Parity = parity_dict[parity.ToLower()],
-                DataBits = data_bits,
-                StopBits = stop_bits_dict[stop_bits.ToLower()],
-                Handshake = handshake_dict[handshake.ToLower()],
-                WriteTimeout = timeout,
-                ReadTimeout = timeout,
-            };
-
-            serial_port.DataReceived += new SerialDataReceivedEventHandler(DataReceivedHandler);
+            Task.Run(ProcessQueue);
         }
 
-        public void Start()
+        public static void Setup(string port, int baud_rate, string parity, int data_bits, string stop_bits, string handshake, int timeout)
         {
-            if (serial_port == null)
+            rolodex.FunctionMapper();
+
+            serial_port = new SerialPort(port, baud_rate, ParseParity(parity), data_bits, ParseStopBits(stop_bits))
             {
-                return;
-            }
+                Handshake = ParseHandshake(handshake),
+                WriteTimeout = timeout,
+                ReadTimeout = timeout
+            };
+
+            serial_port.DataReceived += DataReceivedHandler;
+        }
+
+        public static bool Start()
+        {
+            if (serial_port == null) return false;
+
             try
             {
                 serial_port.Open();
+                STSI.connection_message = $"ST Serial Interface started on {serial_port.PortName}";
+                return true;
             }
             catch (System.IO.IOException)
             {
-                STSI.Logger($"Unable to connect to {serial_port.PortName} :(", "");
+                STSI.connection_message = $"Unable to connect to {serial_port.PortName} :(";
+                return false;
             }
         }
 
-        public void Stop()
+        public static void Stop()
         {
-            if (serial_port == null)
-            {
-                return;
-            }
-            serial_port.Close();
+            serial_port?.Close();
         }
 
         private static void DataReceivedHandler(object sender, SerialDataReceivedEventArgs e)
         {
-            ThreadPool.QueueUserWorkItem(HandleData, sender);
-        }
-
-        private static void HandleData(object? state)
-        {
-            if (state != null)
+            if (sender is SerialPort sp && sp.BytesToRead > 0)
             {
-                SerialPort sp = (SerialPort)state;
-
-                try
-                {
-                    if (sp.BytesToRead > 0)
-                    {
-                        byte[] buffer = new byte[sp.BytesToRead];
-                        sp.Read(buffer, 0, buffer.Length);
-
-                        if (BinaryTools.IsBinaryData(buffer))
-                        {
-                            // Neither UTF-8 or ASCII characters
-                            string resp = "DEN";
-                            byte[] response_data = Encoding.UTF8.GetBytes(resp);
-                            sp.Write(response_data, 0, response_data.Length);
-                        }
-                        else
-                        {
-                            data_buffer.Append(Encoding.UTF8.GetString(buffer));
-                            while (data_buffer.ToString().Contains('\n'))
-                            {
-                                string full_message = data_buffer.ToString();
-                                int delimeter_index = full_message.IndexOf('\n');
-                                string received_text = full_message[..delimeter_index].Trim();
-
-                                data_buffer.Remove(0, delimeter_index + 1);
-
-                                string response_text = ProcessData(received_text);
-
-                                if (STSI.verbose && response_text == "DEN")
-                                {
-                                    STSI.Logger($"{received_text} : DEN");
-                                }
-
-                                response_text += '\n';
-                                byte[] response_text_bytes = Encoding.UTF8.GetBytes(response_text);
-                                sp.Write(response_text_bytes, 0, response_text_bytes.Length);
-                            }
-                        }
-                    }
-                }
-                catch (TimeoutException) { }
+                queue.Add(sp);
             }
         }
-        
+
+        private static async Task ProcessQueue()
+        {
+            foreach (var sp in queue.GetConsumingEnumerable())
+            {
+                await HandleData(sp);
+            }
+        }
+
+        private static async Task HandleData(SerialPort sp)
+        {
+            await semaphore.WaitAsync();
+            try
+            {
+                byte[] buffer = new byte[sp.BytesToRead];
+                sp.Read(buffer, 0, buffer.Length);
+
+                if (BinaryTools.IsBinaryData(buffer))
+                {
+                    sp.Write(Encoding.UTF8.GetBytes("NAK\n"), 0, 4);
+                    return;
+                }
+
+                lock (buffer_lock)
+                {
+                    data_buffer.Append(Encoding.UTF8.GetString(buffer));
+                    ProcessMessages(sp);
+                }
+            }
+            catch (TimeoutException) { }
+            finally { semaphore.Release(); }
+        }
+
+        private static void ProcessMessages(SerialPort sp)
+        {
+            while (data_buffer.ToString().Contains('\n'))
+            {
+                string full_message = data_buffer.ToString();
+                int delimiter_index = full_message.IndexOf('\n');
+                string received_text = full_message[..delimiter_index].Trim();
+
+                data_buffer.Remove(0, delimiter_index + 1);
+
+                string response_text = ProcessData(received_text);
+
+                if (STSI.verbose && response_text == "NAK") { STSI.Logger($"{received_text} : NAK", ""); }
+
+                sp.Write(Encoding.UTF8.GetBytes(response_text + '\n'), 0, response_text.Length + 1);
+            }
+        }
 
         private static string ProcessData(string message)
         {
-            string resp;
             message = message.Trim().ToUpper();
 
             if (string_comparer.Equals(message, "SYN") && phase == 0)
             {
                 phase = 1;
-                resp = "ACK";
+                return "ACK";
             }
 
-            else if (string_comparer.Equals(message, "ACT") && phase == 1)
+            if (string_comparer.Equals(message, "ACT") && phase == 1)
             {
                 phase = 2;
-                resp = "ACK";
-                if (STSI.verbose)
-                {
-                    STSI.Logger($"Registered Functions: {rolodex.Channels.Count}", "");
-                    foreach (KeyValuePair<int, (Func<object> action, string name)> entry in rolodex.Channels)
-                    {
-                        STSI.Logger($"{entry.Key}: {entry.Value.name}", "");
-                    }
-                }
+                LogRegisterFunctions();
+                return "ACK";
             }
 
-            else if (phase == 1 && (message.StartsWith("CMD") || message.StartsWith("RBOOL") || message.StartsWith("RINT") || message.StartsWith("RFLT")))
+            if (phase == 1 && (message.StartsWith("CMD") || message.StartsWith("RBOOL") || message.StartsWith("RINT") || message.StartsWith("RFLT")))
             {
-                resp = CommandBuilder(message);
+                return CommandBuilder(message);
             }
 
-            else if (phase == 2 && message.StartsWith("EXC"))
+            if (phase == 2 && message.StartsWith("EXC"))
             {
-                resp = CommandExecuter(message);
+                return CommandExecuter(message);
             }
 
-            else if (message.StartsWith("RST"))
+            if (message.StartsWith("RST"))
             {
                 phase = 0;
                 rolodex.Channels.Clear();
-                resp = "ACK";
+                return "ACK";
             }
 
-            else if (message.StartsWith("DBG="))
+            if (message.StartsWith("DBG="))
             {
-                message = message.Split(new[] {'='}, 2)[1];  // Split on first occurance of '='
-                STSI.Logger(message, "");
-                resp = "ACK";
+                STSI.Logger(message.Split(new[] { '=' }, 2)[1], "");
+                return "ACK";
             }
 
-            else
+            return "NAK";
+        }
+
+        private static void LogRegisterFunctions()
+        {
+            if (STSI.verbose)
             {
-                resp = "DEN";
+                STSI.Logger($"Registered Runctions: {rolodex.Channels.Count}", "");
+                foreach (var entry in rolodex.Channels)
+                {
+                    STSI.Logger($"{entry.Key}:{entry.Value.name}", "");
+                }
             }
-
-            return resp;
         }
 
         private static string CommandBuilder(string command)
         {
-            string[] command_split = command.Split(new Char[] { '=', ',' });
+            string[] command_split = command.Split(new[] { '=', ',' });
             if (command_split.Length == 3)
             {
-                if (command.StartsWith("CMD"))
-                {
-                    if (rolodex.CMD_Rolodex.ContainsKey(command_split[1]))
-                    {
-                        rolodex.ChannelMapper_CMD(Int32.Parse(command_split[2]), rolodex.CMD_Rolodex[command_split[1]]);
-                        return "ACK";
-                    }
-                }
-                else if (command.StartsWith("RBOOL"))
-                {
-                    if (rolodex.RET_Rolodex.ContainsKey(command_split[1]))
-                    {
-                        rolodex.ChannelMapper_RET(Int32.Parse(command_split[2]), rolodex.RET_Rolodex[command_split[1]], typeof(bool));
-                        return "ACK";
-                    }
-                }
-                else if (command.StartsWith("RINT"))
-                {
-                    if (rolodex.RET_Rolodex.ContainsKey(command_split[1]))
-                    {
-                        rolodex.ChannelMapper_RET(Int32.Parse(command_split[2]), rolodex.RET_Rolodex[command_split[1]], typeof(int));
-                        return "ACK";
-                    }
-                }
-                else if (command.StartsWith("RFLT"))
-                {
-                    if (rolodex.RET_Rolodex.ContainsKey(command_split[1]))
-                    {
-                        rolodex.ChannelMapper_RET(Int32.Parse(command_split[2]), rolodex.RET_Rolodex[command_split[1]], typeof(float));
-                        return "ACK";
-                    }
-                }
+                return HandleCommand(command_split[0], command_split[1], int.Parse(command_split[2]));
             }
-            return "DEN";
+            return "NAK";
+        }
+
+        private static string HandleCommand(string command_type, string key, int channel)
+        {
+            if (command_type.Equals("CMD") && rolodex.CMD_Rolodex.TryGetValue(key, out var action))
+            {
+                rolodex.ChannelMapper_CMD(channel, action);
+                return "ACK";
+            }
+
+            if (command_type.Equals("RBOOL") && rolodex.RET_Rolodex.TryGetValue(key, out var bool_action))
+            {
+                rolodex.ChannelMapper_RET(channel, bool_action, typeof(bool));
+                return "ACK";
+            }
+
+            if (command_type.Equals("RINT") && rolodex.RET_Rolodex.TryGetValue(key, out var int_action))
+            {
+                rolodex.ChannelMapper_RET(channel, int_action, typeof(int));
+                return "ACK";
+            }
+
+            if (command_type.Equals("RFLT") && rolodex.RET_Rolodex.TryGetValue(key, out var float_action))
+            {
+                rolodex.ChannelMapper_RET(channel, float_action, typeof(float));
+                return "ACK";
+            }
+
+            return "NAK";
         }
 
         private static string CommandExecuter(string command)
         {
-            string[] command_split = command.Split(new Char[] { '=' });
-            if (command_split.Length == 2)
-            {
-                int channel = Int32.Parse(command_split[1]);
-                if (rolodex.Channels.TryGetValue(channel, out var channelInfo))
+            string[] command_split = command.Split('=');
+            if (command_split.Length == 2 && int.TryParse(command_split[1], out int channel) && rolodex.Channels.TryGetValue(channel, out var channel_info)){
+                try
                 {
-                    Func<object> action = channelInfo.action;
-                    string name = channelInfo.name;
-
-                    try
-                    {
-                        object result = action();
-                        return $"{result}";
-                    }
-                    catch { return "DEN"; }
-
+                    object result = channel_info.action();
+                    return result.ToString() ?? "NAK";
                 }
+                catch { return "NAK";  }
             }
-            return "DEN";
+            return "NAK";
         }
+
+        private static Parity ParseParity(string parity) =>
+            Enum.TryParse(parity, true, out Parity parsed_parity) ? parsed_parity : Parity.None;
+
+        private static StopBits ParseStopBits(string stop_bits) =>
+            Enum.TryParse(stop_bits, true, out StopBits parsed_parity) ? parsed_parity : StopBits.None;
+
+        private static Handshake ParseHandshake(string handshake) =>
+            Enum.TryParse(handshake, true, out Handshake parsed_handshake) ? parsed_handshake : Handshake.None;
     }
 }

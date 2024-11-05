@@ -1,6 +1,7 @@
 ﻿using MelonLoader;
 using ST_Serial_Interface;
 using System.IO.Ports;
+using System.Text.Json;
 using UnityEngine;
 
 // Assembly information
@@ -13,9 +14,6 @@ namespace ST_Serial_Interface
     {
         // How long to display startup message on the screen
         private readonly static int messageOnScreenSecs = 10;
-
-        // Create new objects
-        private readonly Serial serial = new();
 
         // App state checker for the logger
         private static int phase_old = Serial.phase;
@@ -33,6 +31,14 @@ namespace ST_Serial_Interface
         private MelonPreferences_Entry<string>? serial_handshake;
         private MelonPreferences_Entry<int>? serial_timeout;
         private MelonPreferences_Entry<bool>? serial_verbose;
+
+        // Update information
+        private const string current_version = "v1.1.0";
+        private const string repo_owner = "mookeyj79";
+        private const string repo_name = "Star-Trucker-Serial-Interface";
+
+        public static string connection_message = "";
+        private static string update_message = "";
 
         public override void OnLateInitializeMelon()
         {
@@ -52,6 +58,9 @@ namespace ST_Serial_Interface
             // Set verbosity
             verbose = serial_verbose.Value;
 
+            // Check for updates
+            CheckForUpdates();
+
             // Display available ports
             string[] portNames = SerialPort.GetPortNames();
             LoggerInstance.Msg($"Number of ports found: {portNames.Length}");
@@ -61,7 +70,7 @@ namespace ST_Serial_Interface
             }
 
             // Setup the serial port
-            serial.Setup(
+            Serial.Setup(
                 serial_port.Value,
                 serial_baud_rate.Value,
                 serial_parity.Value,
@@ -72,11 +81,48 @@ namespace ST_Serial_Interface
             );
 
             // Start the serial connection
-            serial.Start();
+            Serial.Start();
 
             // Log the initialize message
-            LoggerInstance.Msg($"ST Serial Interface started on {serial_port.Value}");
+            LoggerInstance.Msg($"{connection_message}");
             MelonEvents.OnGUI.Subscribe(DrawInit, 100);
+        }
+
+        private async void CheckForUpdates()
+        {
+            string? latest_version = await GetLastestVersion();
+            if (latest_version != null && latest_version != current_version)
+            {
+                update_message = $"A new version ({latest_version}) is available!";
+                LoggerInstance.Warning(update_message);
+            }
+        }
+
+        private static async Task<string?> GetLastestVersion()
+        {
+            try
+            {
+                using HttpClient client = new();
+                client.DefaultRequestHeaders.UserAgent.ParseAdd("Mozilla/5.0 (compatible; AcmeInc/1.0)");
+                string url = $"https://api.github.com/repos/{repo_owner}/{repo_name}/releases/latest";
+                HttpResponseMessage response = await client.GetAsync(url);
+                if (response.IsSuccessStatusCode)
+                {
+                    string json_response = await response.Content.ReadAsStringAsync();
+                    using JsonDocument json_doc = JsonDocument.Parse(json_response);
+                    JsonElement root = json_doc.RootElement;
+
+                    if (root.TryGetProperty("tag_name", out JsonElement tag_element))
+                    {
+                        return tag_element.GetString();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                update_message = $"Error checking for updates: {ex.Message}";
+            }
+            return null;
         }
 
         public override void OnUpdate()
@@ -97,19 +143,39 @@ namespace ST_Serial_Interface
         public override void OnDeinitializeMelon()
         {
             base.OnDeinitializeMelon();
-            serial.Stop();
+            Serial.Stop();
         }
 
         private void DrawInit()
         {
             // Draw the initialize message on the screen
-            if (Time.realtimeSinceStartup < messageOnScreenSecs && serial_port != null)
+            if (Time.realtimeSinceStartup < messageOnScreenSecs)
             {
-                GUIStyle style = new GUIStyle();
-                style.alignment = TextAnchor.UpperLeft;
-                style.normal.textColor = Color.yellow;
-                style.fontStyle = FontStyle.Bold;
-                GUI.Box(new Rect(Screen.width - 235, 5, 600, 600), $"ST Serial Interface started on {serial_port.Value}", style);
+                float box_width = 250;
+                float box_height = 50;
+                Rect box_rect = new(Screen.width - box_width - 10, 5, box_width, box_height);
+                
+                GUIStyle style1 = new(GUI.skin.label)
+                {
+                    alignment = TextAnchor.MiddleRight
+                };
+                style1.normal.background = null;
+                style1.normal.textColor = Color.yellow;
+                style1.fontStyle = FontStyle.Bold;
+
+                GUIStyle style2 = new(GUI.skin.label)
+                {
+                    alignment = TextAnchor.MiddleRight
+                };
+                style2.normal.background = null;
+                style2.normal.textColor = Color.green;
+                style2.fontStyle = FontStyle.Bold;
+
+                GUI.Box(box_rect, GUIContent.none);
+                GUILayout.BeginArea(box_rect);
+                GUILayout.Label(connection_message, style1);
+                GUILayout.Label(update_message, style2);
+                GUILayout.EndArea();
             }
         }
 
