@@ -5,7 +5,7 @@ using System.Text.Json;
 using UnityEngine;
 
 // Assembly information
-[assembly: MelonInfo(typeof(STSI), "ST_Serial_Interface", "1.0.0", "MookeyJ")]
+[assembly: MelonInfo(typeof(STSI), "ST_Serial_Interface", "1.1.0", "MookeyJ")]
 [assembly: MelonGame("Monster And Monster", "Star Trucker")]
 
 namespace ST_Serial_Interface
